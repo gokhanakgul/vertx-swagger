@@ -1,4 +1,5 @@
-@JsonInclude(JsonInclude.Include.NON_NULL) 
+@DataObject
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {{#serializableModel}}implements Serializable{{/serializableModel}} {
   {{#vars}}{{#isEnum}}
 
@@ -8,6 +9,10 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {{#seriali
   private {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};{{/vars}}
 
   public {{classname}} () {
+
+  }
+
+  public {{classname}} (JsonObject jsonObject) {
 
   }
 
@@ -59,6 +64,10 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {{#seriali
     return sb.toString();
   }
 
+
+    public JsonObject toJson(){
+        return null;
+    }
   /**
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).

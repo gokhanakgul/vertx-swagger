@@ -13,8 +13,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<junit.version>4.12</junit.version>
-		<vertx.version>3.4.1</vertx.version>
-		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+		<vertx.version>3.4.2</vertx.version>
+		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+        <maven-clean-plugin>3.0.0</maven-clean-plugin>
 		<vertx-swagger-router.version>{{vertxSwaggerRouterVersion}}</vertx-swagger-router.version>
 		<maven-shade-plugin.version>2.3</maven-shade-plugin.version>
 		<jackson-datatype-jsr310.version>2.7.4</jackson-datatype-jsr310.version>
@@ -35,6 +36,19 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-codegen</artifactId>
+            <version>${vertx.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-proxy</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+
 		<dependency>
             <groupId>com.github.phiz71</groupId>
             <artifactId>vertx-swagger-router</artifactId>
@@ -51,14 +65,46 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
+			<!--<plugin>-->
+				<!--<artifactId>maven-compiler-plugin</artifactId>-->
+				<!--<version>${maven-compiler-plugin.version}</version>-->
+				<!--<configuration>-->
+					<!--<source>${java.version}</source>-->
+					<!--<target>${java.version}</target>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+
+                    <annotationProcessors>
+                        <annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
+                    </annotationProcessors>
+                    <generatedSourcesDirectory>${project.basedir}/src/main/generated</generatedSourcesDirectory>
+                    <compilerArgs>
+                        <arg>-AoutputDirectory=${project.basedir}/src/main</arg>
+                    </compilerArgs>
+
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin}</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/src/main/generated</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -86,6 +132,8 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
 		</plugins>
 	</build>
 </project>

@@ -65,10 +65,19 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         apiTemplateFiles.put("apiImpl.mustache", // the template to use
                 "Impl.java"); // the extension for each file to write
 
+        apiTemplateFiles.put("apiDatabaseService.mustache", // the template to use
+                "DatabaseService.java"); // the extension for each file to write
+
         apiTemplateFiles.put("apiVerticle.mustache", // the template to use
                 "Verticle.java"); // the extension for each file to write
+
         apiTemplateFiles.put("apiException.mustache", // the template to use
                 "Exception.java"); // the extension for each file to write
+
+        apiTemplateFiles.put("apiException.mustache", // the template to use
+                "Exception.java"); // the extension for each file to write
+
+
 
         /*
          * Template Location. This is the location which templates will be read
@@ -161,12 +170,16 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         }
         supportingFiles.add(new SupportingFile("MainApiException.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiException.java"));
 
+        supportingFiles.add(new SupportingFile("package-info.mustache", sourceFolder + File.separator + apiPackage.replace(".", File.separator), "package-info.java"));
+        supportingFiles.add(new SupportingFile("package-model-info.mustache", sourceFolder + File.separator + modelPackage.replace(".", File.separator), "package-info.java"));
+
         writeOptional(outputFolder, new SupportingFile("vertx-default-jul-logging.mustache", resourceFolder, "vertx-default-jul-logging.properties"));
         writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
         writeOptional(outputFolder, new SupportingFile("README.mustache", "", "README.md"));
         writeOptional(outputFolder, new SupportingFile("executer-batch.mustache", "", "run-with-config.sh"));
         writeOptional(outputFolder, new SupportingFile("vertx-application-config.mustache", "", "config.json"));
         writeOptional(outputFolder, new SupportingFile("swagger-codegen-ignore.mustache", "", ".swagger-codegen-ignore"));
+
     }
 
     @Override
