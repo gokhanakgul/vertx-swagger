@@ -12,7 +12,7 @@ public class SampleVertXGeneratorTest {
 
     @Test
     public void generateSampleServer() {
-        String[] args = new String[11];
+        String[] args = new String[12];
         args[0] = "generate";
         args[1] = "-l";
         args[2] = "java-vertx";
@@ -24,6 +24,7 @@ public class SampleVertXGeneratorTest {
         args[8] = "io.swagger";
         args[9] = "--artifact-id";
         args[10] = "petstore-vertx-server";
+        args[11] = "-DjdbcPersistence=true";
         SwaggerCodegen.main(args);
     }
 

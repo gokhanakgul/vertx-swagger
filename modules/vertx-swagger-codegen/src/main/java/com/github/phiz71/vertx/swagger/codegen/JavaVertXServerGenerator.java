@@ -31,6 +31,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
     public static final String ROOT_PACKAGE = "io.swagger.server.api";
     public static final String VERTX_SWAGGER_ROUTER_VERSION = "vertxSwaggerRouterVersion";
     public static final String RX_INTERFACE_OPTION = "rxInterface";
+    public static final String JDBC_PERSISTENCE = "jdbcPersistence";
     public static final String MAIN_API_VERTICAL_GENERATION_OPTION = "mainVerticleGeneration";
 
     public JavaVertXServerGenerator() {
@@ -105,6 +106,9 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
         cliOptions.add(CliOption.newBoolean(MAIN_API_VERTICAL_GENERATION_OPTION,
                 "When specified, MainApiVerticle.java will not be generated"));
+
+        cliOptions.add(CliOption.newBoolean(JDBC_PERSISTENCE,
+                "When specified, MainApiVerticle.java will not be generated"));
     }
 
     /**
@@ -159,6 +163,11 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         if(Boolean.parseBoolean(additionalProperties.getOrDefault(MAIN_API_VERTICAL_GENERATION_OPTION, "true").toString())) {
             supportingFiles.add(new SupportingFile("MainApiVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiVerticle.java"));
         }
+
+        if(Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
+            supportingFiles.add(new SupportingFile("JDBCVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JDBCVerticle.java"));
+        }
+
         supportingFiles.add(new SupportingFile("MainApiException.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiException.java"));
 
         writeOptional(outputFolder, new SupportingFile("vertx-default-jul-logging.mustache", resourceFolder, "vertx-default-jul-logging.properties"));
@@ -174,7 +183,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         super.postProcessModelProperty(model, property);
         if (!model.isEnum) {
             model.imports.add("JsonInclude");
-            model.imports.add("JsonProperty");
+                model.imports.add("JsonProperty");
             if (model.hasEnums) {
                 model.imports.add("JsonValue");
             }

@@ -22,12 +22,17 @@ public class {{classname}}Impl implements {{classname}} {
 {{#operation}}
     //{{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
     {{#rxInterface}}
-{{>RxMethodImpl}}
+        {{>RxMethodImpl}}
     {{/rxInterface}}
     {{^rxInterface}}
-{{>AsyncMethodImpl}}
+        {{>AsyncMethodImpl}}
     {{/rxInterface}}
     
 {{/operation}}
 {{/operations}}
+
+{{#jdbcPersistence}}
+    {{>serviceJdbcImpl}}
+{{/jdbcPersistence}}
+
 }

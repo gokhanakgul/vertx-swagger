@@ -18,8 +18,8 @@ import com.github.phiz71.vertx.swagger.router.SwaggerRouter;
 import java.util.List;
 import java.util.Map;
 
-public class {{classname}}Verticle extends AbstractVerticle {
-    final static Logger LOGGER = LoggerFactory.getLogger({{classname}}Verticle.class); 
+public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/jdbcPersistence}}{{^jdbcPersistence}}AbstractVerticle {{/jdbcPersistence}} {
+    private final static Logger LOGGER = LoggerFactory.getLogger({{classname}}Verticle.class);
     
     {{#operations}}{{#operation}}{{#vendorExtensions}}final static String {{x-serviceId-varName}} = "{{x-serviceId}}";
     {{/vendorExtensions}}{{/operation}}{{/operations}}
@@ -28,6 +28,8 @@ public class {{classname}}Verticle extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
+        {{#jdbcPersistence}}super.start(startFuture);{{/jdbcPersistence}}
+
         {{#operations}}{{#operation}}
         //Consumer for {{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
         vertx.eventBus().<JsonObject> consumer({{#vendorExtensions}}{{x-serviceId-varName}}{{/vendorExtensions}}).handler(message -> {
@@ -96,6 +98,6 @@ public class {{classname}}Verticle extends AbstractVerticle {
     }
 
     protected {{classname}} createServiceImplementation() {
-        return new {{classname}}Impl();
+        {{#jdbcPersistence}}return new {{classname}}Impl(dbClient);{{/jdbcPersistence}}{{^jdbcPersistence}}return new {{classname}}Impl();{{/jdbcPersistence}}
     }
 }
