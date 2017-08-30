@@ -1,2 +1,2 @@
     @Fluent
-    {{classname}}DatabaseService {{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}, {{/allParams}}{{#hasAuthMethods}}User user, {{/hasAuthMethods}}Handler<AsyncResult<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}>> handler);
+    {{classname}}DatabaseService {{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}, {{/allParams}}Handler<AsyncResult<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}>> handler);

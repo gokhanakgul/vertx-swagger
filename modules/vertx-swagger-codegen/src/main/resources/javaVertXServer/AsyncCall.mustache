@@ -1,4 +1,4 @@
-                service.{{operationId}}({{#hasParams}}{{#allParams}}{{paramName}}, {{/allParams}}{{/hasParams}}{{#hasAuthMethods}}user, {{/hasAuthMethods}}result -> {
+                service.{{operationId}}({{#hasParams}}{{#allParams}}{{paramName}}, {{/allParams}}{{/hasParams}}result -> {
                     if (result.succeeded()){
                 {{#returnType}}
                         DeliveryOptions deliveryOptions = new DeliveryOptions().addHeader("Content-Type", "application/json");
