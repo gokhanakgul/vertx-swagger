@@ -1,5 +1,25 @@
-    private JDBCClient dbClient;
+private JDBCClient _dbClient;
 
-    public {{classname}}Impl(JDBCClient dbClient) {
-        this.dbClient = dbClient;
+    public {{classname}}Impl(JDBCClient dbClient, Handler<AsyncResult<{{classname}}>> readyHandler) {
+        this._dbClient = dbClient;
+
+        dbClient.getConnection(ar -> {
+            if (ar.failed()) {
+               // LOGGER.error("Could not open JDBC Connection", ar.cause());
+                readyHandler.handle(Future.failedFuture(ar.cause()));
+            } else {
+                SQLConnection connection = ar.result();
+                connection.execute(SQLQUERY_CREATE_TABLE, create -> {
+                    connection.close();
+                    if (create.failed()) {
+                       // LOGGER.error("DB Prepare Exception", create.cause());
+                        readyHandler.handle(Future.failedFuture(create.cause()));
+                    } else {
+                        readyHandler.handle(Future.succeededFuture(this));
+                    }
+                });
+
+            }
+        });
+
     }

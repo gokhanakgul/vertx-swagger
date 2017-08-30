@@ -1,5 +1,6 @@
 package com.github.phiz71.vertx.swagger.codegen;
 
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -21,25 +22,25 @@ import io.swagger.models.Model;
 import io.swagger.models.Operation;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
+import io.swagger.models.parameters.Parameter;
 import io.swagger.util.Json;
 
 public class JavaVertXServerGenerator extends AbstractJavaCodegen {
-
-    protected String resourceFolder = "src/main/resources";
-    protected String apiVersion = "1.0.0-SNAPSHOT";
 
     public static final String ROOT_PACKAGE = "io.swagger.server.api";
     public static final String VERTX_SWAGGER_ROUTER_VERSION = "vertxSwaggerRouterVersion";
     public static final String RX_INTERFACE_OPTION = "rxInterface";
     public static final String JDBC_PERSISTENCE = "jdbcPersistence";
     public static final String MAIN_API_VERTICAL_GENERATION_OPTION = "mainVerticleGeneration";
+    protected String resourceFolder = "src/main/resources";
+    protected String apiVersion = "1.0.0-SNAPSHOT";
 
     public JavaVertXServerGenerator() {
         super();
 
         reservedWords.add("user");
-        
-        
+
+
         // set the output folder here
         outputFolder = "generated-code/javaVertXServer";
 
@@ -61,7 +62,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
          */
         apiTemplateFiles.clear();
         apiTemplateFiles.put("api.mustache", // the template to use
-                 ".java"); // the extension for each file to write
+                ".java"); // the extension for each file to write
 
         apiTemplateFiles.put("apiImpl.mustache", // the template to use
                 "Impl.java"); // the extension for each file to write
@@ -100,7 +101,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
         String vertxSwaggerRouterVersion = ResourceBundle.getBundle("vertx-swagger-router").getString("vertx-swagger-router.version");
         additionalProperties.put(VERTX_SWAGGER_ROUTER_VERSION, vertxSwaggerRouterVersion);
-        
+
         cliOptions.add(CliOption.newBoolean(RX_INTERFACE_OPTION,
                 "When specified, API interfaces are generated with RX and methods return Single<>."));
 
@@ -108,7 +109,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
                 "When specified, MainApiVerticle.java will not be generated"));
 
         cliOptions.add(CliOption.newBoolean(JDBC_PERSISTENCE,
-                "When specified, MainApiVerticle.java will not be generated"));
+                "When specified, JDBCVerticle.java will be generated"));
     }
 
     /**
@@ -122,8 +123,8 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
     }
 
     /**
-     * Configures a friendly name for the generator. This will be used by the
-     * generator to select the library with the -l flag.
+     * Configures a friendly name for the generator. This will be used by the generator to select
+     * the library with the -l flag.
      *
      * @return the friendly name for the generator
      */
@@ -132,8 +133,8 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
     }
 
     /**
-     * Returns human-friendly help for the generator. Provide the consumer with
-     * help tips, parameters here
+     * Returns human-friendly help for the generator. Provide the consumer with help tips,
+     * parameters here
      *
      * @return A string value for the help message
      */
@@ -152,7 +153,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         importMapping.put("JsonInclude", "com.fasterxml.jackson.annotation.JsonInclude");
         importMapping.put("JsonProperty", "com.fasterxml.jackson.annotation.JsonProperty");
         importMapping.put("JsonValue", "com.fasterxml.jackson.annotation.JsonValue");
-        importMapping.put("MainApiException", invokerPackage+".MainApiException");
+        importMapping.put("MainApiException", invokerPackage + ".MainApiException");
 
         modelDocTemplateFiles.clear();
         apiDocTemplateFiles.clear();
@@ -160,11 +161,11 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         supportingFiles.clear();
         supportingFiles.add(new SupportingFile("swagger.mustache", resourceFolder, "swagger.json"));
 
-        if(Boolean.parseBoolean(additionalProperties.getOrDefault(MAIN_API_VERTICAL_GENERATION_OPTION, "true").toString())) {
+        if (Boolean.parseBoolean(additionalProperties.getOrDefault(MAIN_API_VERTICAL_GENERATION_OPTION, "true").toString())) {
             supportingFiles.add(new SupportingFile("MainApiVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiVerticle.java"));
         }
 
-        if(Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
+        if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
             supportingFiles.add(new SupportingFile("JDBCVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JDBCVerticle.java"));
         }
 
@@ -183,7 +184,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         super.postProcessModelProperty(model, property);
         if (!model.isEnum) {
             model.imports.add("JsonInclude");
-                model.imports.add("JsonProperty");
+            model.imports.add("JsonProperty");
             if (model.hasEnums) {
                 model.imports.add("JsonValue");
             }
@@ -208,25 +209,23 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
             if (operation.getHasPathParams()) {
                 operation.path = camelizePath(operation.path);
             }
-            
-            for(CodegenParameter param:operation.allParams) {
-                if("UUID".equals(param.dataType)) {
+
+            for (CodegenParameter param : operation.allParams) {
+                if ("UUID".equals(param.dataType)) {
                     param.vendorExtensions.put("X-isUUID", true);
                 }
             }
         }
-            return newObjs;
+        return newObjs;
     }
 
-    
-    
+
     @Override
     public CodegenOperation fromOperation(String path, String httpMethod, Operation operation, Map<String, Model> definitions, Swagger swagger) {
-        CodegenOperation codegenOperation =  super.fromOperation(path, httpMethod, operation, definitions, swagger);
+        CodegenOperation codegenOperation = super.fromOperation(path, httpMethod, operation, definitions, swagger);
         codegenOperation.imports.add("MainApiException");
         return codegenOperation;
     }
-    
 
     @Override
     public CodegenModel fromModel(String name, Model model, Map<String, Model> allDefinitions) {
@@ -260,13 +259,13 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         Map<String, Path> paths = swagger.getPaths();
         if (paths != null) {
             for (Entry<String, Path> entry : paths.entrySet()) {
-                manageOperationNames(entry.getValue(), entry.getKey());
+                manageOperationNames(entry.getValue(), entry.getKey(), swagger.getDefinitions());
             }
         }
         this.additionalProperties.remove("gson");
     }
 
-    private void manageOperationNames(Path path, String pathname) {
+    private void manageOperationNames(Path path, String pathname, Map<String, Model> definitions) {
         String serviceIdTemp;
 
         Map<HttpMethod, Operation> operationMap = path.getOperationMap();
@@ -274,10 +273,137 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
             for (Entry<HttpMethod, Operation> entry : operationMap.entrySet()) {
                 serviceIdTemp = computeServiceId(pathname, entry);
                 entry.getValue().setVendorExtension("x-serviceId", serviceIdTemp);
+                entry.getValue().setVendorExtension("x-serviceIduC", serviceIdTemp.toUpperCase());
                 entry.getValue().setVendorExtension("x-serviceId-varName", serviceIdTemp.toUpperCase() + "_SERVICE_ID");
+                prepareSQLs(entry, definitions);
             }
         }
     }
+
+    private void prepareSQLs(Entry<HttpMethod, Operation> entry, Map<String, Model> definitions) {
+        if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
+            StringBuilder sqlQuery = new StringBuilder();
+
+            String tableName = "TABLE_NAME";
+            String whereClause = "";
+            String queryMethod = "";
+            switch (entry.getKey()) {
+                case GET:
+                    sqlQuery.append("SELECT * FROM ").append(tableName);
+                    queryMethod = "queryWithParams";
+
+                    whereClause = extractWhereClause(entry);
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(whereClause)) {
+                        sqlQuery.append(" WHERE ").append(whereClause);
+                    }
+
+                    break;
+
+                case POST:
+                    sqlQuery.append("INSERT INTO ").append(tableName);
+                    queryMethod = "updateWithParams";
+
+                    whereClause = extractWhereClause(entry);
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(whereClause)) {
+                        sqlQuery.append(" WHERE ").append(whereClause);
+                    }
+
+                    break;
+
+                case PUT:
+                    queryMethod = "updateWithParams";
+                    sqlQuery.append("UPDATE ").append(tableName).append(" SET ");
+
+                    whereClause = extractWhereClause(entry);
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(whereClause)) {
+                        sqlQuery.append(" WHERE ").append(whereClause);
+                    }
+
+                    break;
+                case PATCH:
+                    queryMethod = "updateWithParams";
+
+                    sqlQuery.append("UPDATE ").append(tableName).append(" SET ");
+
+
+                    whereClause = extractWhereClause(entry);
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(whereClause)) {
+                        sqlQuery.append(" WHERE ").append(whereClause);
+                    }
+
+                    break;
+                case DELETE:
+                    queryMethod = "updateWithParams";
+                    sqlQuery.append("DELETE FROM ").append(tableName);
+
+                    whereClause = extractWhereClause(entry);
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(whereClause)) {
+                        sqlQuery.append(" WHERE ").append(whereClause);
+                    }
+
+                    break;
+            }
+
+            entry.getValue().setVendorExtension("x-serviceId-SQL", sqlQuery);
+            entry.getValue().setVendorExtension("x-serviceId-Query-Method", queryMethod);
+
+
+        }
+    }
+
+    private String extractWhereClause(Entry<HttpMethod, Operation> entry) {
+        StringBuilder sqlQuery = new StringBuilder();
+        boolean addAnd = false;
+        for (Parameter param : entry.getValue().getParameters()) {
+            if (param.getIn().equals("path") || param.getIn().equals("query")) {
+                if (addAnd) {
+                    sqlQuery.append(" AND ");
+                }
+                sqlQuery.append(param.getName() + " ").append('=').append(" ?");
+                addAnd = true;
+            }
+        }
+        return sqlQuery.toString();
+    }
+
+
+    private String extractValuesData(Entry<HttpMethod, Operation> entry, Map<String, Model> definitions, String tableName) {
+        StringBuilder sqlQuery = new StringBuilder(" VALUES ( ");
+        boolean hasFormData = false;
+        boolean hasBody = false;
+
+
+        for (Parameter param : entry.getValue().getParameters()) {
+            if (param.getIn().equals("formData")) {
+                if (hasFormData)
+                    sqlQuery.append(",");
+                sqlQuery.append(" ? ");
+                hasFormData = true;
+            }
+        }
+
+
+        for (Parameter param : entry.getValue().getParameters()) {
+            if (param.getIn().equals("body")) {
+                hasBody = true;
+                //definitions.get(tableName).getProperties()
+                int count = 0;
+                while (count < definitions.get(tableName).getProperties().size()) {
+                    if (count > 0)
+                        sqlQuery.append(",");
+                    sqlQuery.append(" ? ");
+                    count++;
+                }
+            }
+        }
+
+        sqlQuery.append(")");
+
+        return sqlQuery.toString();
+    }
+
+
+    //private String
 
     private String computeServiceId(String pathname, Entry<HttpMethod, Operation> entry) {
         String operationId = entry.getValue().getOperationId();

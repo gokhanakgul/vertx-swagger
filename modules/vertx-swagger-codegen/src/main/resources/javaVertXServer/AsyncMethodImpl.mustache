@@ -1,3 +1,40 @@
     public void {{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}, {{/allParams}}{{#hasAuthMethods}}User user, {{/hasAuthMethods}}Handler<AsyncResult<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Void{{/returnType}}>> handler){
+        {{^jdbcPersistence}}
         throw new java.lang.UnsupportedOperationException("Not implemented, yet") ;
+        {{/jdbcPersistence}}
+        {{#jdbcPersistence}}
+        _dbClient.getConnection(car -> {
+            if (car.succeeded()) {
+                SQLConnection connection = car.result();
+
+                JsonArray data = new JsonArray(){{#allParams}}.add({{paramName}}){{/allParams}};
+
+                connection.{{#vendorExtensions}}{{x-serviceId-Query-Method}}{{/vendorExtensions}}(SQLQUERY_{{#vendorExtensions}}{{x-serviceIduC}}{{/vendorExtensions}}, data,res -> {
+                    connection.close();
+                    if (res.succeeded()) {
+
+/*                        JsonArray pages = new JsonArray(res.result()
+                            .getResults()
+                            .stream()
+                            .map(json -> json.getString(0))
+                            .sorted()
+                            .collect(Collectors.toList()));
+*/
+
+                        handler.handle(Future.succeededFuture());
+
+                    } else {
+                      //  LOGGER.error("Database query error", res.cause());
+                        handler.handle(Future.failedFuture(res.cause()));
+
+                    }
+                });
+            } else {
+                //LOGGER.error("Database query error", car.cause());
+                handler.handle(Future.failedFuture(car.cause()));
+
+            }
+        });
+        {{/jdbcPersistence}}
+
     }

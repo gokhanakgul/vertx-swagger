@@ -16,23 +16,30 @@ import io.vertx.ext.auth.User;
 
 import java.util.List;
 import java.util.Map;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.jdbc.JDBCClient;
+import io.vertx.ext.sql.ResultSet;
+import io.vertx.ext.sql.SQLConnection;
 
 public class {{classname}}Impl implements {{classname}} {
+
+{{#jdbcPersistence}}
+    private final static String SQLQUERY_CREATE_TABLE ="CREATE TABLE if not exists TABLE_NAME (Id integer identity primary key, Name varchar(255) unique, Content clob)";
+    {{#operations}}{{#operation}}{{#vendorExtensions}}private final static String SQLQUERY_{{x-serviceIduC}} = "{{{x-serviceId-SQL}}}";
+    {{/vendorExtensions}}{{/operation}}{{/operations}}
+
+    {{>serviceJdbcImpl}}
+{{/jdbcPersistence}}
+
 {{#operations}}
 {{#operation}}
     //{{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
-    {{#rxInterface}}
-        {{>RxMethodImpl}}
-    {{/rxInterface}}
-    {{^rxInterface}}
-        {{>AsyncMethodImpl}}
-    {{/rxInterface}}
-    
+{{#rxInterface}}{{>RxMethodImpl}}{{/rxInterface}}{{^rxInterface}}{{>AsyncMethodImpl}}{{/rxInterface}}
 {{/operation}}
 {{/operations}}
-
-{{#jdbcPersistence}}
-    {{>serviceJdbcImpl}}
-{{/jdbcPersistence}}
 
 }

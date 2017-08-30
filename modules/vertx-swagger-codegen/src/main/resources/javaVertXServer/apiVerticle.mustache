@@ -10,7 +10,10 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.auth.User;
+import io.vertx.core.Future;
 import com.github.phiz71.vertx.swagger.router.SwaggerRouter;
+
+{{#jdbcPersistence}}import io.swagger.server.api.JDBCVerticle;{{/jdbcPersistence}}
 
 {{#imports}}import {{import}};
 {{/imports}}
@@ -24,11 +27,22 @@ public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/j
     {{#operations}}{{#operation}}{{#vendorExtensions}}final static String {{x-serviceId-varName}} = "{{x-serviceId}}";
     {{/vendorExtensions}}{{/operation}}{{/operations}}
 
-    protected {{classname}} service = createServiceImplementation();
+    protected {{classname}} service {{^jdbcPersistence}} = createServiceImplementation(){{/jdbcPersistence}};
 
     @Override
-    public void start() throws Exception {
-        {{#jdbcPersistence}}super.start(startFuture);{{/jdbcPersistence}}
+    public void start(Future<Void> startFuture) throws Exception {
+        {{#jdbcPersistence}}
+            super.start(startFuture);
+            service = {{classname}}.create(dbClient,  ready -> {
+                if (ready.succeeded()) {
+
+                    startFuture.complete();
+                } else {
+                    startFuture.fail(ready.cause());
+                }
+            });
+
+        {{/jdbcPersistence}}
 
         {{#operations}}{{#operation}}
         //Consumer for {{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
@@ -97,7 +111,10 @@ public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/j
         LOGGER.error("Unexpected error in "+ serviceName, cause);
     }
 
+    {{^jdbcPersistence}}
     protected {{classname}} createServiceImplementation() {
-        {{#jdbcPersistence}}return new {{classname}}Impl(dbClient);{{/jdbcPersistence}}{{^jdbcPersistence}}return new {{classname}}Impl();{{/jdbcPersistence}}
+       return new {{classname}}Impl();
     }
+    {{/jdbcPersistence}}
+
 }
