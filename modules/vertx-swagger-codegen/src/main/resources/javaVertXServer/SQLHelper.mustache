@@ -1,0 +1,35 @@
+package {{invokerPackage}};
+
+import java.time.format.DateTimeFormatter;
+
+public class SQLHelper {
+
+    public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+{{#apiInfo}}
+    {{#apis}}
+        {{#models}}
+            {{#model}}
+    //############# START {{classname}} #############
+    {{#allVars}}
+    public static String {{model.classname}}_SQL_findBy{{nameInCamelCase}} = "SELECT * FROM {{model.classname}} WHERE {{name}} = ?";
+    {{/allVars}}
+
+    {{#allVars}}
+    public static String {{model.classname}}_SQL_deleteBy{{nameInCamelCase}} = "DELETE FROM {{model.classname}} WHERE {{name}} = ?";
+    {{/allVars}}
+
+    {{#allVars}}
+    public static String {{model.classname}}_SQL_updateBy{{nameInCamelCase}} = "UPDATE {{classname}} SET {{#allVars}}{{^isReadOnly}} {{name}} = ? {{/isReadOnly}}{{/allVars}} WHERE {{name}} = ?";
+    {{/allVars}}
+
+    public static String {{model.classname}}_SQL_insert{{nameInCamelCase}} = "INSERT INTO {{classname}} ({{#allVars}}{{^isReadOnly}} {{name}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}}) VALUES ({{#allVars}}{{^isReadOnly}} ? {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}})";
+
+    public static String {{model.classname}}_SQL_createTable ="CREATE TABLE IF NOT EXISTS {{model.classname}}({{#allVars}} {{name}} {{#isString}} VARCHAR(255) {{/isString}}{{#isInteger}} INTEGER {{/isInteger}}{{#isLong}} BIGINT {{/isLong}}{{#isFloat}} REAL {{/isFloat}}{{#isDouble}} FLOAT {{/isDouble}}{{#isByteArray}} BINARY {{/isByteArray}}{{#isBinary}} BLOB {{/isBinary}}{{#isFile}} CLOB {{/isFile}}{{#isBoolean}} BIT {{/isBoolean}}{{#isDate}} DATE {{/isDate}}{{#isDateTime}} TIMESTAMP {{/isDateTime}}{{#hasMore}},{{/hasMore}}{{/allVars}} )";
+
+    //############# END {{classname}} #############
+            {{/model}}
+        {{/models}}
+    {{/apis}}
+{{/apiInfo}}
+}

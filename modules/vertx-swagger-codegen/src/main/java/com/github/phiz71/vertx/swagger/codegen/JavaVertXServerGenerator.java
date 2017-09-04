@@ -89,6 +89,9 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
          */
         modelPackage = ROOT_PACKAGE + ".model";
 
+
+        testPackage = ROOT_PACKAGE + ".verticle";
+
         /*
          * Invoker Package. Optional, if needed, this can be used in templates
          */
@@ -146,7 +149,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
     public void processOpts() {
         super.processOpts();
 
-        apiTestTemplateFiles.clear();
+//        apiTestTemplateFiles.clear();
 
         importMapping.remove("JsonCreator");
         importMapping.remove("com.fasterxml.jackson.annotation.JsonProperty");
@@ -171,12 +174,17 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
         supportingFiles.add(new SupportingFile("MainApiException.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiException.java"));
 
+        supportingFiles.add(new SupportingFile("SQLHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "SQLHelper.java"));
+        supportingFiles.add(new SupportingFile("JsonHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JsonHelper.java"));
+
+
         writeOptional(outputFolder, new SupportingFile("vertx-default-jul-logging.mustache", resourceFolder, "vertx-default-jul-logging.properties"));
         writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
         writeOptional(outputFolder, new SupportingFile("README.mustache", "", "README.md"));
         writeOptional(outputFolder, new SupportingFile("executer-batch.mustache", "", "run-with-config.sh"));
         writeOptional(outputFolder, new SupportingFile("vertx-application-config.mustache", "", "config.json"));
         writeOptional(outputFolder, new SupportingFile("swagger-codegen-ignore.mustache", "", ".swagger-codegen-ignore"));
+
     }
 
     @Override
@@ -275,6 +283,12 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
                 entry.getValue().setVendorExtension("x-serviceId", serviceIdTemp);
                 entry.getValue().setVendorExtension("x-serviceIduC", serviceIdTemp.toUpperCase());
                 entry.getValue().setVendorExtension("x-serviceId-varName", serviceIdTemp.toUpperCase() + "_SERVICE_ID");
+                entry.getValue().setVendorExtension("x-isPost",entry.getKey().equals(HttpMethod.POST));
+                entry.getValue().setVendorExtension("x-isGet",entry.getKey().equals(HttpMethod.GET));
+                entry.getValue().setVendorExtension("x-isPut",entry.getKey().equals(HttpMethod.PUT));
+                entry.getValue().setVendorExtension("x-isPatch",entry.getKey().equals(HttpMethod.PATCH));
+                entry.getValue().setVendorExtension("x-isHead",entry.getKey().equals(HttpMethod.HEAD));
+                entry.getValue().setVendorExtension("x-isDelete",entry.getKey().equals(HttpMethod.DELETE));
                 prepareSQLs(entry, definitions);
             }
         }
@@ -286,11 +300,10 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
             String tableName = "TABLE_NAME";
             String whereClause = "";
-            String queryMethod = "";
+            //String queryMethod = "";
             switch (entry.getKey()) {
                 case GET:
                     sqlQuery.append("SELECT * FROM ").append(tableName);
-                    queryMethod = "queryWithParams";
 
                     whereClause = extractWhereClause(entry);
                     if (!org.apache.commons.lang3.StringUtils.isEmpty(whereClause)) {
@@ -301,7 +314,6 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
                 case POST:
                     sqlQuery.append("INSERT INTO ").append(tableName);
-                    queryMethod = "updateWithParams";
 
                     whereClause = extractWhereClause(entry);
                     if (!org.apache.commons.lang3.StringUtils.isEmpty(whereClause)) {
@@ -311,7 +323,6 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
                     break;
 
                 case PUT:
-                    queryMethod = "updateWithParams";
                     sqlQuery.append("UPDATE ").append(tableName).append(" SET ");
 
                     whereClause = extractWhereClause(entry);
@@ -321,7 +332,6 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
                     break;
                 case PATCH:
-                    queryMethod = "updateWithParams";
 
                     sqlQuery.append("UPDATE ").append(tableName).append(" SET ");
 
@@ -333,7 +343,6 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
                     break;
                 case DELETE:
-                    queryMethod = "updateWithParams";
                     sqlQuery.append("DELETE FROM ").append(tableName);
 
                     whereClause = extractWhereClause(entry);
@@ -345,8 +354,6 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
             }
 
             entry.getValue().setVendorExtension("x-serviceId-SQL", sqlQuery);
-            entry.getValue().setVendorExtension("x-serviceId-Query-Method", queryMethod);
-
 
         }
     }

@@ -1,6 +1,8 @@
 
   public enum {{{datatypeWithEnum}}} {
-    {{#allowableValues}}{{#enumVars}}{{{name}}}({{{value}}}){{^-last}},
+    {{#allowableValues}}{{#enumVars}}
+    @JsonInclude
+    {{{name}}}({{{value}}}){{^-last}},
     {{/-last}}{{#-last}};{{/-last}}{{/enumVars}}{{/allowableValues}}
 
     private String value;

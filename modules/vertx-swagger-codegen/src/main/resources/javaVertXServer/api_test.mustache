@@ -1,0 +1,138 @@
+package io.swagger.server.api.verticle;
+
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.file.FileSystem;
+import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientRequest;
+import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.unit.Async;
+import io.vertx.ext.unit.TestContext;
+import io.vertx.ext.unit.junit.VertxUnitRunner;
+
+import {{invokerPackage}}.SQLHelper;
+import {{invokerPackage}}.JsonHelper;
+
+{{#imports}}import {{import}};
+{{/imports}}
+
+@RunWith(VertxUnitRunner.class)
+public class {{classname}}Test {
+
+    private static final int TEST_PORT = 8080;
+    private static final String TEST_HOST = "localhost";
+    private static Vertx vertx;
+    private static HttpClient httpClient;
+
+
+    @BeforeClass
+    public static void beforeClass(TestContext context) {
+        Async before = context.async();
+
+        vertx = Vertx.vertx();
+        // init Main
+        vertx.deployVerticle("io.swagger.server.api.MainApiVerticle", res -> {
+            if (res.succeeded()) {
+                before.complete();
+            } else {
+                context.fail(res.cause());
+            }
+        });
+
+        httpClient = Vertx.vertx().createHttpClient();
+
+    }
+
+    @AfterClass
+    public static void afterClass(TestContext context) {
+        Async after = context.async();
+        FileSystem vertxFileSystem = vertx.fileSystem();
+        vertxFileSystem.deleteRecursive(".vertx", true, vertxDir -> {
+            if (vertxDir.succeeded()) {
+                after.complete();
+            } else {
+                context.fail(vertxDir.cause());
+            }
+        });
+    }
+
+
+    {{#operations}}
+        {{#operation}}
+
+    @Test(timeout = 2000)
+    //{{x-serviceId}}
+    public void test_{{operationId}}(TestContext context) {
+        // Get an async object to control the completion of the test
+        Async async = context.async();
+
+        String path = "{{basePathWithoutHost}}{{path}}";
+        {{#pathParams}}
+        path = path.replaceAll("\\:{{paramName}}",{{#isString}}"{{example}}"{{/isString}}{{^isString}}{{example}}{{/isString}}) ;
+        {{/pathParams}}
+
+    {{#vendorExtensions}}
+        {{^x-isGet}}HttpClientRequest request = {{/x-isGet}}httpClient.{{#x-isGet}}getNow{{/x-isGet}}{{#x-isPost}}post{{/x-isPost}}{{#x-isPut}}put{{/x-isPut}}{{#x-isDelete}}post{{/x-isDelete}}(TEST_PORT, TEST_HOST, path, response -> {
+
+            context.assertEquals(response.statusCode(), 200);
+            {{#x-isGet}}
+            response.bodyHandler(body -> {
+                JsonObject jo = new JsonObject(body.toString());
+                {{#returnSimpleType}}
+                try {
+                    {{returnType}} profile = Json.mapper.readValue(jo.encode(), {{returnType}}.class);
+                } catch (IOException e) {
+                    context.fail(e);
+                }
+                {{/returnSimpleType}}
+            });
+            {{/x-isGet}}
+
+            response.exceptionHandler(err -> {
+                context.fail(err);
+            });
+
+            async.complete();
+        });
+    {{/vendorExtensions}}
+
+    {{#hasBodyParam}}
+        {{#bodyParam}}{{dataType}} body = new {{dataType}}();{{/bodyParam}}
+        String bufferString = JsonHelper.toJsonObject(body).toString();
+        Buffer buffer = Buffer.buffer(bufferString.getBytes());
+        request.putHeader(HttpHeaders.CONTENT_LENGTH, buffer.length()+"");
+        request.putHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+        request.write(buffer);
+        request.end();
+    {{/hasBodyParam}}
+    {{#hasFormParams}}
+        StringBuilder formDataBuilder = new StringBuilder();
+        {{#formParams}}
+        formDataBuilder.append("{{paramName}}=").append("value"){{#hasMore}}.append("&"){{/hasMore}};
+        {{/formParams}}
+
+        String bufferString = formDataBuilder.toString();
+        Buffer buffer = Buffer.buffer(bufferString.getBytes());
+        request.putHeader(HttpHeaders.CONTENT_LENGTH, buffer.length()+"");
+        request.putHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        request.write(buffer);
+        request.end();
+    {{/hasFormParams}}
+    }
+        {{/operation}}
+    {{/operations}}
+
+}

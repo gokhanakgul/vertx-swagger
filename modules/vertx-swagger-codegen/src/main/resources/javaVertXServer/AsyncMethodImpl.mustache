@@ -9,28 +9,35 @@
 
                 JsonArray data = new JsonArray(){{#allParams}}.add({{paramName}}){{/allParams}};
 
-                connection.{{#vendorExtensions}}{{x-serviceId-Query-Method}}{{/vendorExtensions}}(SQLQUERY_{{#vendorExtensions}}{{x-serviceIduC}}{{/vendorExtensions}}, data,res -> {
+                connection.{{#vendorExtensions}}{{^x-isGet}}updateWithParams{{/x-isGet}}{{#x-isGet}}queryWithParams{{/x-isGet}}{{/vendorExtensions}}(SQLQUERY_{{#vendorExtensions}}{{x-serviceIduC}}{{/vendorExtensions}}, data,res -> {
+
                     connection.close();
                     if (res.succeeded()) {
+                        {{#returnType}}{{{returnType}}} response = new {{{returnType}}}();{{/returnType}}
 
-/*                        JsonArray pages = new JsonArray(res.result()
-                            .getResults()
-                            .stream()
-                            .map(json -> json.getString(0))
-                            .sorted()
-                            .collect(Collectors.toList()));
-*/
+                    {{#vendorExtensions}}
+                    {{#x-isGet}}
+                        {{#returnType}}
+                        ResultSet resultSet = res.result();
+                        if (resultSet.getNumRows() == 0) {
+                            handler.handle(Future.failedFuture(new {{classname}}Exception(404, "Not Found")));
 
-                        handler.handle(Future.succeededFuture());
+                        } else {
+                            JsonArray row = resultSet.getResults().get(0);
+                            response.setId(row.getLong(0));
+                        }
+                        {{/returnType}}
+                    {{/x-isGet}}
+                    {{/vendorExtensions}}
 
+                        handler.handle(Future.succeededFuture({{#returnType}}response{{/returnType}}));
                     } else {
-                      //  LOGGER.error("Database query error", res.cause());
+                        LOGGER.error("Database query error", res.cause());
                         handler.handle(Future.failedFuture(res.cause()));
-
                     }
                 });
             } else {
-                //LOGGER.error("Database query error", car.cause());
+                LOGGER.error("Database query error", car.cause());
                 handler.handle(Future.failedFuture(car.cause()));
 
             }

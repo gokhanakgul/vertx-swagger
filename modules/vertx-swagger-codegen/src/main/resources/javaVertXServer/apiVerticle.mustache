@@ -32,18 +32,23 @@ public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/j
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         {{#jdbcPersistence}}
-            super.start(startFuture);
-            service = {{classname}}.create(dbClient,  ready -> {
-                if (ready.succeeded()) {
-
-                    startFuture.complete();
-                } else {
-                    startFuture.fail(ready.cause());
-                }
-            });
-
+        super.start(startFuture);
+        service = {{classname}}.create(dbClient,  ready -> {
+            if (ready.succeeded()) {
+                startFuture.complete();
+                initOperations();
+            } else {
+                startFuture.fail(ready.cause());
+            }
+        });
+        {{/jdbcPersistence}}
+        {{^jdbcPersistence}}
+        initOperations();
         {{/jdbcPersistence}}
 
+    }
+
+    private void initOperations(){
         {{#operations}}{{#operation}}
         //Consumer for {{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
         vertx.eventBus().<JsonObject> consumer({{#vendorExtensions}}{{x-serviceId-varName}}{{/vendorExtensions}}).handler(message -> {
@@ -92,8 +97,9 @@ public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/j
             }
         });
         {{/operation}}{{/operations}}
+
     }
-    
+
     private void manageError(Message<JsonObject> message, Throwable cause, String serviceName) {
         int code = MainApiException.INTERNAL_SERVER_ERROR.getStatusCode();
         String statusMessage = MainApiException.INTERNAL_SERVER_ERROR.getStatusMessage();
