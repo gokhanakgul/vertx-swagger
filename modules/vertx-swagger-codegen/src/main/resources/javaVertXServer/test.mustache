@@ -1,0 +1,27 @@
+{{#apiInfo}}
+    {{#apis}}
+        {{#operations}}
+            {{#operation}}
+                <!---------->
+
+                Model:{{returnBaseType}}
+                Complex Type : {{complexType}}
+                {{#allParams}}
+                     {{#items}}
+                         Complex Type : {{complexType}}
+                         Complex Type : {{name}}
+                         Complex Type : {{baseName}}
+                     {{/items}}
+                    {{#isBodyParam}}
+                        BaseType : {{baseType}}
+                        DataType : {{dataType}}
+                    {{/isBodyParam}}
+                {{/allParams}}
+
+                {{httpMethod}}  {{basePath}}{{path}}
+                {{httpMethod}} {{scheme}}://localhost:{{serverPort}}{{contextPath}}{{path}}
+
+            {{/operation}}
+        {{/operations}}
+    {{/apis}}
+{{/apiInfo}}
