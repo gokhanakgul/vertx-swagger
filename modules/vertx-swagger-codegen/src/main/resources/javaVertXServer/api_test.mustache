@@ -3,7 +3,6 @@ package io.swagger.server.api.verticle;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,6 +24,9 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 
 import {{invokerPackage}}.SQLHelper;
 import {{invokerPackage}}.JsonHelper;
+
+import java.util.*;
+
 
 {{#imports}}import {{import}};
 {{/imports}}
@@ -73,15 +75,15 @@ public class {{classname}}Test {
     {{#operations}}
         {{#operation}}
 
-    @Test(timeout = 2000)
-    //{{x-serviceId}}
+    @Test(timeout = 3000)
+    //{{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
     public void test_{{operationId}}(TestContext context) {
         // Get an async object to control the completion of the test
         Async async = context.async();
 
         String path = "{{basePathWithoutHost}}{{path}}";
         {{#pathParams}}
-        path = path.replaceAll("\\:{{paramName}}",{{#isString}}"{{example}}"{{/isString}}{{^isString}}{{example}}{{/isString}}) ;
+        path = path.replaceAll("\\:{{paramName}}","{{example}}") ;
         {{/pathParams}}
 
     {{#vendorExtensions}}
@@ -110,7 +112,7 @@ public class {{classname}}Test {
     {{/vendorExtensions}}
 
     {{#hasBodyParam}}
-        {{#bodyParam}}{{dataType}} body = new {{dataType}}();{{/bodyParam}}
+        {{#bodyParam}}{{{dataType}}} body = {{{example}}};{{/bodyParam}}
         String bufferString = JsonHelper.toJsonObject(body).toString();
         Buffer buffer = Buffer.buffer(bufferString.getBytes());
         request.putHeader(HttpHeaders.CONTENT_LENGTH, buffer.length()+"");

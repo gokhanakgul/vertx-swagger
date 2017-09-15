@@ -13,7 +13,10 @@
 
                     connection.close();
                     if (res.succeeded()) {
-                        {{#returnType}}{{{returnType}}} response = new {{{returnType}}}();{{/returnType}}
+                    {{#returnType}}
+                        {{#returnContainer}}{{{returnType}}} response  = {{{defaultResponse}}} ;{{/returnContainer}}
+                        {{^returnContainer}}{{{returnType}}} response = new {{{returnType}}}();{{/returnContainer}}
+                    {{/returnType}}
 
                     {{#vendorExtensions}}
                     {{#x-isGet}}
@@ -24,7 +27,11 @@
 
                         } else {
                             JsonArray row = resultSet.getResults().get(0);
-                            response.setId(row.getLong(0));
+                            {{^returnContainer}}
+                            //TODO: Implement response object
+                            {{#returnTypeIsPrimitive}}//response={{{returnType}}}.valueOf(row.getLong(0));{{/returnTypeIsPrimitive}}
+                            {{^returnTypeIsPrimitive}}//response.setId(row.getLong(0));{{/returnTypeIsPrimitive}}
+                            {{/returnContainer}}
                         }
                         {{/returnType}}
                     {{/x-isGet}}
