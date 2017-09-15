@@ -1,0 +1,254 @@
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: Profile API
+  description: Profile API definition
+
+schemes:
+  - http
+
+host: www.anket.io
+
+basePath: /api
+
+tags:
+- name: "profile"
+  description: "Everything about a Profile"
+
+paths:
+  /profile:
+    post:
+      tags:
+        - profile
+      summary: Create profile
+      description: This can only be done by the logged in profile.
+      operationId: create
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created profile object
+          required: true
+          schema:
+            $ref: '#/definitions/Profile'
+      responses:
+        '200':
+          description: Success
+        default:
+          description: successful operation
+  /profile/changePassword:
+    put:
+      tags:
+        - profile
+      summary: Change passwords of profile
+      operationId: changePassword
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: profilename
+          in: formData
+          description: The profile name
+          required: true
+          type: string
+        - name: currentPassword
+          in: formData
+          description: Present password of the profile
+          required: true
+          type: string
+        - name: newPassword
+          in: formData
+          description: New password of the profile
+          required: true
+          type: string
+          minLength: 8
+          maxLength: 50
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid profilename/password supplied
+  /profile/login:
+    post:
+      tags:
+        - profile
+      summary: Logs profile into the system
+      description: ''
+      operationId: loginProfile
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: profilename
+          in: formData
+          description: The profile name for login
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: The password for login in clear text
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+          headers:
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the profile
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when toekn expires
+        '400':
+          description: Invalid profilename/password supplied
+  /profile/logout:
+    get:
+      tags:
+        - profile
+      summary: Logs out current logged in profile session
+      description: ''
+      operationId: logoutProfile
+      produces:
+        - application/xml
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /profile/{profilename}:
+    get:
+      tags:
+        - profile
+      summary: Get profile by profile name
+      description: ''
+      operationId: findProfileByProfilename
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: profilename
+          in: path
+          description: 'The name that needs to be fetched. Use profile1 for testing. '
+          required: true
+          type: string
+          maximum: 255
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Profile'
+        '400':
+          description: Invalid profilename supplied
+        '404':
+          description: Profile not found
+    put:
+      tags:
+        - profile
+      summary: Updated profile
+      description: This can only be done by the logged in profile.
+      operationId: updateProfile
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: profilename
+          in: path
+          description: name that need to be deleted
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated profile object
+          required: true
+          schema:
+            $ref: '#/definitions/Profile'
+      responses:
+        '400':
+          description: Invalid profile supplied
+        '404':
+          description: Profile not found
+    delete:
+      tags:
+        - profile
+      summary: Delete profile
+      description: This can only be done by the logged in profile.
+      operationId: deleteProfile
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: profilename
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          type: string
+      responses:
+        '400':
+          description: Invalid profilename supplied
+        '404':
+          description: Profile not found
+definitions:
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+  Profile:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+        uniqueItems: true
+        readOnly: true
+        example: 12
+      profilename:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+        format: "pasword"
+      phone:
+        type: "string"
+      profileStatus:
+        type: "integer"
+        format: "int32"
+        description: "Profile Status"
+      createAt:
+        type: string
+        format: "date-time"
+        readOnly: true
+      updateAt:
+        type: string
+        format: "date-time"
+        readOnly: true
+      age:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 200
+      gender:
+        type: string
+        enum:
+          - MALE
+          - FEMALE
+        default: FEMALE
+
+

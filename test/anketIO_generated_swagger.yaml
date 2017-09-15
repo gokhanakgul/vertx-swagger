@@ -1,0 +1,884 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Swagger API
+host: playground.apistudio.io
+basePath: /try/0d5845e9-2fc7-4556-ac8d-aeec3cd4c9a9
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+
+  '/account/{id}':
+    get:
+      description: Get one `Account` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Account`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Account'
+    put:
+      description: Update a `Account` with given id.
+      parameters:
+        - name: body
+          description: A new `Account`
+          in: body
+          schema:
+            $ref: '#/definitions/Account'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Account`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Account'
+    delete:
+      description: Delete a `Account` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Account`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /accounts:
+    post:
+      description: Make a new `Account`.
+      parameters:
+        - name: body
+          description: A new `Account`
+          in: body
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Account'
+    get:
+      description: Get all `Account`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Account'
+  '/office/{id}':
+    get:
+      description: Get one `Office` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Office`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Office'
+    put:
+      description: Update a `Office` with given id.
+      parameters:
+        - name: body
+          description: A new `Office`
+          in: body
+          schema:
+            $ref: '#/definitions/Office'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Office`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Office'
+    delete:
+      description: Delete a `Office` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Office`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /offices:
+    post:
+      description: Make a new `Office`.
+      parameters:
+        - name: body
+          description: A new `Office`
+          in: body
+          schema:
+            $ref: '#/definitions/Office'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Office'
+    get:
+      description: Get all `Office`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Office'
+  '/account-answer/{id}':
+    get:
+      description: Get one `AccountAnswer` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `AccountAnswer`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountAnswer'
+    put:
+      description: Update a `AccountAnswer` with given id.
+      parameters:
+        - name: body
+          description: A new `AccountAnswer`
+          in: body
+          schema:
+            $ref: '#/definitions/AccountAnswer'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `AccountAnswer`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountAnswer'
+    delete:
+      description: Delete a `AccountAnswer` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `AccountAnswer`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /account-answers:
+    post:
+      description: Make a new `AccountAnswer`.
+      parameters:
+        - name: body
+          description: A new `AccountAnswer`
+          in: body
+          schema:
+            $ref: '#/definitions/AccountAnswer'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountAnswer'
+    get:
+      description: Get all `AccountAnswer`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AccountAnswer'
+  '/company/{id}':
+    get:
+      description: Get one `Company` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Company`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+    put:
+      description: Update a `Company` with given id.
+      parameters:
+        - name: body
+          description: A new `Company`
+          in: body
+          schema:
+            $ref: '#/definitions/Company'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Company`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+    delete:
+      description: Delete a `Company` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Company`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /companys:
+    post:
+      description: Make a new `Company`.
+      parameters:
+        - name: body
+          description: A new `Company`
+          in: body
+          schema:
+            $ref: '#/definitions/Company'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+    get:
+      description: Get all `Company`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Company'
+  '/survey/{id}':
+    get:
+      description: Get one `Survey` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Survey`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Survey'
+    put:
+      description: Update a `Survey` with given id.
+      parameters:
+        - name: body
+          description: A new `Survey`
+          in: body
+          schema:
+            $ref: '#/definitions/Survey'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Survey`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Survey'
+    delete:
+      description: Delete a `Survey` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Survey`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /surveys:
+    post:
+      description: Make a new `Survey`.
+      parameters:
+        - name: body
+          description: A new `Survey`
+          in: body
+          schema:
+            $ref: '#/definitions/Survey'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Survey'
+    get:
+      description: Get all `Survey`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Survey'
+  '/account-survey/{id}':
+    get:
+      description: Get one `AccountSurvey` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `AccountSurvey`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountSurvey'
+    put:
+      description: Update a `AccountSurvey` with given id.
+      parameters:
+        - name: body
+          description: A new `AccountSurvey`
+          in: body
+          schema:
+            $ref: '#/definitions/AccountSurvey'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `AccountSurvey`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountSurvey'
+    delete:
+      description: Delete a `AccountSurvey` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `AccountSurvey`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /account-surveys:
+    post:
+      description: Make a new `AccountSurvey`.
+      parameters:
+        - name: body
+          description: A new `AccountSurvey`
+          in: body
+          schema:
+            $ref: '#/definitions/AccountSurvey'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccountSurvey'
+    get:
+      description: Get all `AccountSurvey`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AccountSurvey'
+  '/tag/{id}':
+    get:
+      description: Get one `Tag` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Tag`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Tag'
+    put:
+      description: Update a `Tag` with given id.
+      parameters:
+        - name: body
+          description: A new `Tag`
+          in: body
+          schema:
+            $ref: '#/definitions/Tag'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Tag`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Tag'
+    delete:
+      description: Delete a `Tag` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Tag`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /tags:
+    post:
+      description: Make a new `Tag`.
+      parameters:
+        - name: body
+          description: A new `Tag`
+          in: body
+          schema:
+            $ref: '#/definitions/Tag'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Tag'
+    get:
+      description: Get all `Tag`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Tag'
+  '/domain/{id}':
+    get:
+      description: Get one `Domain` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Domain`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Domain'
+    put:
+      description: Update a `Domain` with given id.
+      parameters:
+        - name: body
+          description: A new `Domain`
+          in: body
+          schema:
+            $ref: '#/definitions/Domain'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Domain`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Domain'
+    delete:
+      description: Delete a `Domain` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `Domain`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /domains:
+    post:
+      description: Make a new `Domain`.
+      parameters:
+        - name: body
+          description: A new `Domain`
+          in: body
+          schema:
+            $ref: '#/definitions/Domain'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Domain'
+    get:
+      description: Get all `Domain`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Domain'
+  '/survey-answer/{id}':
+    get:
+      description: Get one `SurveyAnswer` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `SurveyAnswer`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SurveyAnswer'
+    put:
+      description: Update a `SurveyAnswer` with given id.
+      parameters:
+        - name: body
+          description: A new `SurveyAnswer`
+          in: body
+          schema:
+            $ref: '#/definitions/SurveyAnswer'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `SurveyAnswer`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SurveyAnswer'
+    delete:
+      description: Delete a `SurveyAnswer` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `SurveyAnswer`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /survey-answers:
+    post:
+      description: Make a new `SurveyAnswer`.
+      parameters:
+        - name: body
+          description: A new `SurveyAnswer`
+          in: body
+          schema:
+            $ref: '#/definitions/SurveyAnswer'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SurveyAnswer'
+    get:
+      description: Get all `SurveyAnswer`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SurveyAnswer'
+  '/survey-question/{id}':
+    get:
+      description: Get one `SurveyQuestion` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `SurveyQuestion`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SurveyQuestion'
+    put:
+      description: Update a `SurveyQuestion` with given id.
+      parameters:
+        - name: body
+          description: A new `SurveyQuestion`
+          in: body
+          schema:
+            $ref: '#/definitions/SurveyQuestion'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `SurveyQuestion`
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SurveyQuestion'
+    delete:
+      description: Delete a `SurveyQuestion` with given id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `SurveyQuestion`
+          type: integer
+      responses:
+        '200':
+          description: OK
+  /survey-questions:
+    post:
+      description: Make a new `SurveyQuestion`.
+      parameters:
+        - name: body
+          description: A new `SurveyQuestion`
+          in: body
+          schema:
+            $ref: '#/definitions/SurveyQuestion'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SurveyQuestion'
+    get:
+      description: Get all `SurveyQuestion`.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SurveyQuestion'
+definitions:
+  Account:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      surname:
+        type: string
+      domainId:
+        type: integer
+        format: int64
+      birthdate:
+        type: string
+        format: date-time
+      email:
+        type: string
+      createDate:
+        type: string
+        format: date-time
+      active:
+        type: boolean
+        default: false
+      accountType:
+        type: string
+        default: UNREGISTERED
+        enum:
+          - UNREGISTERED
+          - REGISTERED
+          - BLOCKED
+          - CLOSED
+  Office:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      companyId:
+        type: integer
+        format: int64
+      email:
+        type: string
+      tags:
+        type: string
+      priority:
+        type: integer
+        format: int32
+      active:
+        type: boolean
+        default: false
+  AccountAnswer:
+    type: object
+    properties:
+      accountSurveyId:
+        type: integer
+        format: int64
+      questionId:
+        type: integer
+        format: int64
+      answer:
+        type: string
+      createDate:
+        type: string
+        format: date-time
+  Company:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      domainId:
+        type: integer
+        format: int64
+      email:
+        type: string
+      active:
+        type: boolean
+        default: false
+  Survey:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      companyId:
+        type: integer
+        format: int64
+      description:
+        type: string
+      startDate:
+        type: string
+        format: date-time
+      endDate:
+        type: string
+        format: date-time
+      priority:
+        type: integer
+        format: int32
+      active:
+        type: boolean
+        default: false
+      surveyType:
+        type: string
+        default: QUESTIONARY
+        enum:
+          - QUESTIONARY
+          - FEEDBACK
+          - MULTICHOICE
+          - SUBFLOW
+          - SATISFACTION
+  AccountSurvey:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      surveyId:
+        type: integer
+        format: int64
+      accountId:
+        type: integer
+        format: int64
+      hashCode:
+        type: string
+      startDate:
+        type: string
+        format: date-time
+      finishDate:
+        type: string
+        format: date-time
+      createDate:
+        type: string
+        format: date-time
+  Tag:
+    type: object
+    properties:
+      type:
+        type: string
+        default: ACCOUNT
+        enum:
+          - ACCOUNT
+          - SURVEY
+          - OFFICE
+          - COMPANY
+          - DOMAIN
+      tag:
+        type: string
+  Domain:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      email:
+        type: string
+  SurveyAnswer:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      questionId:
+        type: integer
+        format: int64
+      answer:
+        type: string
+      priority:
+        type: integer
+        format: int32
+      active:
+        type: boolean
+        default: false
+  SurveyQuestion:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      quesiton:
+        type: string
+      description:
+        type: string
+      surveyId:
+        type: integer
+        format: int64
+      priority:
+        type: integer
+        format: int32
+      active:
+        type: boolean
+        default: false
+      questionType:
+        type: string
+        default: MULTICHOICE
+        enum:
+          - MULTICHOICE
+          - YESNO
+          - SLIDER
+          - FREETEXT

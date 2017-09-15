@@ -27,6 +27,29 @@ public class SampleVertXGeneratorTest {
         args[11] = "-DjdbcPersistence=true";
         args[12] = "-v";
 
+
+        SwaggerCodegen.main(args);
+    }
+
+
+    @Test
+    public void generateSampleServer2() {
+        String[] args = new String[13];
+        args[0] = "generate";
+        args[1] = "-l";
+        args[2] = "java-vertx";
+        args[3] = "-i";
+        args[4] = "../../test/anketIO_generated_swagger.yaml";
+        args[5] = "-o";
+        args[6] = "../../sample/anketio";
+        args[7] = "--group-id";
+        args[8] = "com.optimo";
+        args[9] = "--artifact-id";
+        args[10] = "anketio";
+        args[11] = "-DjdbcPersistence=true";
+        args[12] = "-v";
+
+
         SwaggerCodegen.main(args);
     }
 
