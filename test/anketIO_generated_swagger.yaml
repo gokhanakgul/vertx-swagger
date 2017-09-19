@@ -3,7 +3,7 @@ info:
   version: "0.0.1"
   title: Swagger API
 host: playground.apistudio.io
-basePath: /try/0d5845e9-2fc7-4556-ac8d-aeec3cd4c9a9
+basePath: /api
 schemes:
   - http
   - https

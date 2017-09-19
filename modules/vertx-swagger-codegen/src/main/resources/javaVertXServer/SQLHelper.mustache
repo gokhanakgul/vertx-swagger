@@ -11,16 +11,18 @@ public class SQLHelper {
     //############# START {{classname}} #############
 
     {{#allVars}}
-    public static String {{model.classname}}_SQL_findBy{{nameInCamelCase}} = "SELECT * FROM {{model.classname}} WHERE {{name}} = ?";
+    public static String {{model.classname}}_SQL_findBy{{nameInCamelCase}} = "SELECT * FROM {{jdbcTablePrefix}}{{classname}} WHERE {{name}} = ?";
 
-    public static String {{model.classname}}_SQL_deleteBy{{nameInCamelCase}} = "DELETE FROM {{model.classname}} WHERE {{name}} = ?";
+    public static String {{model.classname}}_SQL_deleteBy{{nameInCamelCase}} = "DELETE FROM {{jdbcTablePrefix}}{{classname}} WHERE {{name}} = ?";
 
-    public static String {{model.classname}}_SQL_updateBy{{nameInCamelCase}} = "UPDATE {{classname}} SET {{#allVars}}{{^isReadOnly}} {{name}} = ? {{/isReadOnly}}{{/allVars}} WHERE {{name}} = ?";
+    public static String {{model.classname}}_SQL_updateBy{{nameInCamelCase}} = "UPDATE {{jdbcTablePrefix}}{{classname}} SET {{#allVars}}{{^isReadOnly}} {{name}} = ? {{/isReadOnly}}{{/allVars}} WHERE {{name}} = ?";
 
     {{/allVars}}
-    public static String {{model.classname}}_SQL_insert{{nameInCamelCase}} = "INSERT INTO {{classname}} ({{#allVars}}{{^isReadOnly}} {{name}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}}) VALUES ({{#allVars}}{{^isReadOnly}} ? {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}})";
+    public static String {{model.classname}}_SQL_insert{{nameInCamelCase}} = "INSERT INTO {{jdbcTablePrefix}}{{classname}} ({{#allVars}}{{^isReadOnly}} {{name}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}}) VALUES ({{#allVars}}{{^isReadOnly}} ? {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}})";
 
-    public static String {{model.classname}}_SQL_createTable ="CREATE TABLE IF NOT EXISTS {{model.classname}}({{#allVars}} {{name}} {{#isString}} VARCHAR(255) {{/isString}}{{#isInteger}} INTEGER {{/isInteger}}{{#isLong}} BIGINT {{/isLong}}{{#isFloat}} REAL {{/isFloat}}{{#isDouble}} FLOAT {{/isDouble}}{{#isByteArray}} BINARY {{/isByteArray}}{{#isBinary}} BLOB {{/isBinary}}{{#isFile}} CLOB {{/isFile}}{{#isBoolean}} BIT {{/isBoolean}}{{#isDate}} DATE {{/isDate}}{{#isDateTime}} TIMESTAMP {{/isDateTime}}{{#hasMore}},{{/hasMore}}{{/allVars}} )";
+    public static String {{model.classname}}_SQL_createTable ="CREATE TABLE IF NOT EXISTS {{jdbcTablePrefix}}{{model.classname}}({{#allVars}} {{name}} {{#vendorExtensions}}{{#identity}} identity primary key {{/identity}}{{/vendorExtensions}} {{#isString}} VARCHAR(255) {{/isString}}{{#isInteger}} INTEGER {{/isInteger}}{{#isLong}} BIGINT {{/isLong}}{{#isFloat}} REAL {{/isFloat}}{{#isDouble}} FLOAT {{/isDouble}}{{#isByteArray}} BINARY {{/isByteArray}}{{#isBinary}} BLOB {{/isBinary}}{{#isFile}} CLOB {{/isFile}}{{#isBoolean}} BIT {{/isBoolean}}{{#isDate}} DATE {{/isDate}}{{#isDateTime}} TIMESTAMP {{/isDateTime}}{{#hasMore}},{{/hasMore}}{{/allVars}} )";
+
+    public static String {{model.classname}}_SQL_dropTable ="DROP TABLE IF EXISTS {{jdbcTablePrefix}}{{model.classname}}";
 
     //############# END {{classname}} #############
 

@@ -31,6 +31,11 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
     public static final String VERTX_SWAGGER_ROUTER_VERSION = "vertxSwaggerRouterVersion";
     public static final String RX_INTERFACE_OPTION = "rxInterface";
     public static final String JDBC_PERSISTENCE = "jdbcPersistence";
+    public static final String JDBC_TABLE_PREFIX = "jdbcTablePrefix";
+    public static final String JDBC_DEFAULT_TABLE_PREFIX = "tbl_";
+    public static final String JDBC_IDENTITY_FIELD = "jdbcIdField";
+    public static final String JDBC_DEFAULT_IDENTITY_FIELD = "id";
+
     public static final String MAIN_API_VERTICAL_GENERATION_OPTION = "mainVerticleGeneration";
     protected String resourceFolder = "src/main/resources";
     protected String apiVersion = "1.0.0-SNAPSHOT";
@@ -112,7 +117,8 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
                 "When specified, MainApiVerticle.java will not be generated"));
 
         cliOptions.add(CliOption.newBoolean(JDBC_PERSISTENCE,
-                "When specified, JDBCVerticle.java will be generated"));
+                "When specified, JDBC feature will be enabled"));
+
     }
 
     /**
@@ -240,6 +246,11 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         CodegenModel codegenModel = super.fromModel(name, model, allDefinitions);
         codegenModel.imports.remove("ApiModel");
         codegenModel.imports.remove("ApiModelProperty");
+        codegenModel.allVars.stream().forEach(codegenProperty  -> {
+            if (JDBC_DEFAULT_IDENTITY_FIELD.equals(codegenProperty.name))
+                codegenProperty.vendorExtensions.put("identity",true);
+
+        });
         return codegenModel;
 
     }
@@ -262,6 +273,10 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
             artifactVersion = apiVersion = swagger.getInfo().getVersion();
         else
             artifactVersion = apiVersion;
+
+        if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
+            this.additionalProperties.put(JDBC_TABLE_PREFIX, JDBC_DEFAULT_TABLE_PREFIX);
+        }
 
         // manage operation & custom serviceId
         Map<String, Path> paths = swagger.getPaths();
@@ -296,9 +311,10 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
     private void prepareSQLs(Entry<HttpMethod, Operation> entry, Map<String, Model> definitions) {
         if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
+
             StringBuilder sqlQuery = new StringBuilder();
 
-            String tableName = "TABLE_NAME";
+            String tableName = "tbl_TABLE_NAME";
             String whereClause = "";
             //String queryMethod = "";
             switch (entry.getKey()) {
