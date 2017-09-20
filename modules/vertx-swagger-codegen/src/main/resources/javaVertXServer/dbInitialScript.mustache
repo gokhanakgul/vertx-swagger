@@ -1,0 +1,11 @@
+{{#models}}
+    {{#model}}
+
+# MODEL is {{classname}}
+
+DROP TABLE IF EXISTS {{jdbcTablePrefix}}{{classname}};
+
+CREATE TABLE IF NOT EXISTS {{jdbcTablePrefix}}{{classname}}({{#allVars}} {{name}} {{#vendorExtensions}}{{#identity}} identity primary key {{/identity}}{{/vendorExtensions}} {{#isString}} VARCHAR(255) {{/isString}}{{#isInteger}} INTEGER {{/isInteger}}{{#isLong}} BIGINT {{/isLong}}{{#isFloat}} REAL {{/isFloat}}{{#isDouble}} FLOAT {{/isDouble}}{{#isByteArray}} BINARY {{/isByteArray}}{{#isBinary}} BLOB {{/isBinary}}{{#isFile}} CLOB {{/isFile}}{{#isBoolean}} BIT {{/isBoolean}}{{#isDate}} DATE {{/isDate}}{{#isDateTime}} TIMESTAMP {{/isDateTime}}{{#hasMore}},{{/hasMore}}{{/allVars}} );
+
+    {{/model}}
+{{/models}}

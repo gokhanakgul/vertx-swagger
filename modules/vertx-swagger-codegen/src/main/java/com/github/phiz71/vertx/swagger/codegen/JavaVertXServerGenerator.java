@@ -176,11 +176,12 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
         if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
             supportingFiles.add(new SupportingFile("JDBCVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JDBCVerticle.java"));
+            supportingFiles.add(new SupportingFile("SQLHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "SQLHelper.java"));
+            supportingFiles.add(new SupportingFile("dbInitialScript.mustache", "", "dbInitialScript.sql"));
         }
 
         supportingFiles.add(new SupportingFile("MainApiException.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiException.java"));
 
-        supportingFiles.add(new SupportingFile("SQLHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "SQLHelper.java"));
         supportingFiles.add(new SupportingFile("JsonHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JsonHelper.java"));
 
 
@@ -249,7 +250,6 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         codegenModel.allVars.stream().forEach(codegenProperty  -> {
             if (JDBC_DEFAULT_IDENTITY_FIELD.equals(codegenProperty.name))
                 codegenProperty.vendorExtensions.put("identity",true);
-
         });
         return codegenModel;
 
@@ -314,7 +314,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
 
             StringBuilder sqlQuery = new StringBuilder();
 
-            String tableName = "tbl_TABLE_NAME";
+            String tableName = JDBC_DEFAULT_TABLE_PREFIX + "TABLE_NAME";
             String whereClause = "";
             //String queryMethod = "";
             switch (entry.getKey()) {
