@@ -5,11 +5,18 @@ import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 
-
 public class JDBCVerticle extends AbstractVerticle {
-    protected static final String CONFIG_JDBC_URL = "jdbc.url";
-    protected static final String CONFIG_JDBC_DRIVER_CLASS = "jdbc.driver_class";
-    protected static final String CONFIG_JDBC_MAX_POOL_SIZE = "jdbc.max_pool_size";
+
+    protected static final String CONFIG_JDBC_URL = "url";
+    protected static final String CONFIG_JDBC_DRIVER_CLASS = "driver_class"; //the class of the JDBC driver
+    protected static final String CONFIG_JDBC_MAX_POOL_SIZE = "max_pool_size"; //the maximum number of connections to pool - default is 15
+    protected static final String CONFIG_JDBC_USER = "user";
+    protected static final String CONFIG_JDBC_PASSWORD = "password";
+    protected static final String CONFIG_JDBC_INITIAL_POOL_SIZE = "initial_pool_size"; //the number of connections to initialise the pool with - default is 3
+    protected static final String CONFIG_JDBC_MIN_POOL_SIZE = "min_pool_size"; // the minimum number of connections to pool
+    protected static final String CONFIG_JDBC_MAX_STATEMENTS = "max_statements"; //the maximum number of prepared statements to cache - default is 0.
+    protected static final String CONFIG_JDBC_MAX_STATETMENTS_PER_CONNECTION = "max_statements_per_connection";  //the maximum number of prepared statements to cache per connection - default is 0.
+    protected static final String CONFIG_JDBC_MAX_IDLE_TIME = "max_idle_time"; //number of seconds after which an idle connection will be closed - default is 0 (never expire).
 
     protected JDBCClient dbClient;
     protected JsonObject dbConfig;
@@ -32,13 +39,21 @@ public class JDBCVerticle extends AbstractVerticle {
         if (dbClient != null)
             return;
 
+        JsonObject defaultConfig = config().getJsonObject("c3p0");
+/*
         JsonObject defaultConfig = new JsonObject()
-            .put("url", config().getString(CONFIG_JDBC_URL, "jdbc:hsqldb:file:db/wiki"))
-            .put("driver_class", config().getString(CONFIG_JDBC_DRIVER_CLASS, "org.hsqldb.jdbcDriver"))
-            .put("max_pool_size", config().getInteger(CONFIG_JDBC_MAX_POOL_SIZE, 30));
-
-
-        dbClient = JDBCClient.createShared(vertx, dbConfig != null ? dbConfig : defaultConfig);
+                .put(CONFIG_JDBC_URL, config().getString(CONFIG_JDBC_URL, "jdbc:hsqldb:file:db/wiki"))
+                .put(CONFIG_JDBC_DRIVER_CLASS, config().getString(CONFIG_JDBC_DRIVER_CLASS, "org.hsqldb.jdbcDriver"))
+                .put(CONFIG_JDBC_USER, config().getString(CONFIG_JDBC_USER, null))
+                .put(CONFIG_JDBC_PASSWORD, config().getString(CONFIG_JDBC_PASSWORD, null))
+                .put(CONFIG_JDBC_MAX_POOL_SIZE, config().getInteger(CONFIG_JDBC_MAX_POOL_SIZE, 30))
+                .put(CONFIG_JDBC_INITIAL_POOL_SIZE, config().getInteger(CONFIG_JDBC_INITIAL_POOL_SIZE, 3))
+                .put(CONFIG_JDBC_MIN_POOL_SIZE, config().getInteger(CONFIG_JDBC_MIN_POOL_SIZE, 2))
+                .put(CONFIG_JDBC_MAX_STATEMENTS, config().getInteger(CONFIG_JDBC_MAX_STATEMENTS, 0))
+                .put(CONFIG_JDBC_MAX_STATETMENTS_PER_CONNECTION, config().getInteger(CONFIG_JDBC_MAX_STATETMENTS_PER_CONNECTION, 0))
+                .put(CONFIG_JDBC_MAX_IDLE_TIME, config().getInteger(CONFIG_JDBC_MAX_IDLE_TIME, 0));
+*/
+        dbClient = JDBCClient.createShared(vertx, config());
 
     }
 }
