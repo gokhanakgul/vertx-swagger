@@ -1,11 +1,22 @@
+# CREATE SCHEMA
+
+#CREATE SCHEMA IF NOT EXISTS {{artifactId}} CHARACTER SET utf8 COLLATE utf8_general_ci; COMMIT;
+#DROP SCHEMA IF EXISTS {{artifactId}}; COMMIT ;
+
+CREATE SCHEMA IF NOT EXISTS {{artifactId}}
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+COMMIT;
+
 {{#models}}
     {{#model}}
+# CREATE MODEL is {{classname}}
 
-# MODEL is {{classname}}
+DROP TABLE IF EXISTS {{artifactId}}.{{jdbcTablePrefix}}{{classname}};
 
-DROP TABLE IF EXISTS {{jdbcTablePrefix}}{{classname}};
-
-CREATE TABLE IF NOT EXISTS {{jdbcTablePrefix}}{{classname}}({{#allVars}} {{name}} {{#vendorExtensions}}{{#identity}} identity primary key {{/identity}}{{/vendorExtensions}} {{#isString}} VARCHAR(255) {{/isString}}{{#isInteger}} INTEGER {{/isInteger}}{{#isLong}} BIGINT {{/isLong}}{{#isFloat}} REAL {{/isFloat}}{{#isDouble}} FLOAT {{/isDouble}}{{#isByteArray}} BINARY {{/isByteArray}}{{#isBinary}} BLOB {{/isBinary}}{{#isFile}} CLOB {{/isFile}}{{#isBoolean}} BIT {{/isBoolean}}{{#isDate}} DATE {{/isDate}}{{#isDateTime}} TIMESTAMP {{/isDateTime}}{{#hasMore}},{{/hasMore}}{{/allVars}} );
+CREATE TABLE IF NOT EXISTS {{artifactId}}.{{jdbcTablePrefix}}{{classname}}({{#allVars}}
+    {{name}}{{#isString}} VARCHAR(255) {{/isString}}{{#isInteger}} INTEGER {{/isInteger}}{{#isLong}} BIGINT {{/isLong}}{{#isFloat}} REAL {{/isFloat}}{{#isDouble}} FLOAT {{/isDouble}}{{#isByteArray}} BINARY {{/isByteArray}}{{#isBinary}} BLOB {{/isBinary}}{{#isFile}} CLOB {{/isFile}}{{#isBoolean}} BIT {{/isBoolean}}{{#isDate}} DATE DEFAULT GETDATE() {{/isDate}}{{#isDateTime}} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP {{/isDateTime}}{{#vendorExtensions}}{{#identity}} NOT NULL AUTO_INCREMENT PRIMARY KEY {{/identity}}{{/vendorExtensions}}{{#hasMore}},{{/hasMore}}{{/allVars}}
+);
 
     {{/model}}
 {{/models}}

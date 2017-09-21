@@ -9,7 +9,7 @@ private JDBCClient _dbClient;
                 readyHandler.handle(Future.failedFuture(ar.cause()));
             } else {
                 SQLConnection connection = ar.result();
-                connection.execute(SQLQUERY_CREATE_TABLE, create -> {
+                connection.execute(SQLHelper.CHECK_SQL_QUERY, create -> {
                     connection.close();
                     if (create.failed()) {
                         LOGGER.error("DB Prepare Exception", create.cause());

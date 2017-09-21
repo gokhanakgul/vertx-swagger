@@ -1,7 +1,18 @@
 {
     "http.port" : 8080,
 
-    "jdbc.url": "jdbc:mysql://localhost/vertx_blueprint?characterEncoding=UTF-8&useSSL=false",
-    "jdbc.driver_class": "com.mysql.cj.jdbc.Driver",
-    "jdbc.max_pool_size": 30
+    "c3p0" : {
+        "provider_class": "io.vertx.ext.jdbc.spi.impl.C3P0DataSourceProvider",
+        "url":"jdbc:hsqldb:file:db/wiki",
+        "driver_class":"org.hsqldb.jdbcDriver",
+        "user":"",
+        "password":"",
+
+    },
+
+    "hikari" :{
+        "provider_class": "io.vertx.ext.jdbc.spi.impl.HikariDataSourceProvider",
+        "property_file":"/hikari.properties"
+    }
+
 }

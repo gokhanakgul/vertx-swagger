@@ -174,14 +174,7 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
             supportingFiles.add(new SupportingFile("MainApiVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiVerticle.java"));
         }
 
-        if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
-            supportingFiles.add(new SupportingFile("JDBCVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JDBCVerticle.java"));
-            supportingFiles.add(new SupportingFile("SQLHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "SQLHelper.java"));
-            supportingFiles.add(new SupportingFile("dbInitialScript.mustache", "", "dbInitialScript.sql"));
-        }
-
         supportingFiles.add(new SupportingFile("MainApiException.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "MainApiException.java"));
-
         supportingFiles.add(new SupportingFile("JsonHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JsonHelper.java"));
 
 
@@ -191,6 +184,14 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         writeOptional(outputFolder, new SupportingFile("executer-batch.mustache", "", "run-with-config.sh"));
         writeOptional(outputFolder, new SupportingFile("vertx-application-config.mustache", "", "config.json"));
         writeOptional(outputFolder, new SupportingFile("swagger-codegen-ignore.mustache", "", ".swagger-codegen-ignore"));
+
+        if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
+            supportingFiles.add(new SupportingFile("JDBCVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JDBCVerticle.java"));
+            supportingFiles.add(new SupportingFile("SQLHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "SQLHelper.java"));
+            supportingFiles.add(new SupportingFile("dbInitialScript.mustache", resourceFolder, "dbInitialScript.sql"));
+            writeOptional(outputFolder, new SupportingFile("hikari.mustache", resourceFolder, "hikari.properties"));
+            writeOptional(outputFolder, new SupportingFile("c3p0.mustache", resourceFolder, "c3p0.properties"));
+        }
 
     }
 

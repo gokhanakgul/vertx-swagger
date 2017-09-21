@@ -11,10 +11,16 @@ consumes:
   - application/json
 produces:
   - application/json
+  
+tags:
+  - name: "survey"  
+  
 paths:
 
   '/account/{id}':
     get:
+      tags:
+        - "survey"
       description: Get one `Account` with given id.
       parameters:
         - name: id
@@ -28,6 +34,8 @@ paths:
           schema:
             $ref: '#/definitions/Account'
     put:
+      tags:
+      - "survey"  
       description: Update a `Account` with given id.
       parameters:
         - name: body
@@ -46,6 +54,8 @@ paths:
           schema:
             $ref: '#/definitions/Account'
     delete:
+      tags:
+        - "survey"
       description: Delete a `Account` with given id.
       parameters:
         - name: id
@@ -58,6 +68,8 @@ paths:
           description: OK
   /accounts:
     post:
+      tags:
+        - "survey"    
       description: Make a new `Account`.
       parameters:
         - name: body
@@ -71,6 +83,8 @@ paths:
           schema:
             $ref: '#/definitions/Account'
     get:
+      tags:
+        - "survey"    
       description: Get all `Account`.
       responses:
         '200':
@@ -81,6 +95,8 @@ paths:
               $ref: '#/definitions/Account'
   '/office/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `Office` with given id.
       parameters:
         - name: id
@@ -94,6 +110,8 @@ paths:
           schema:
             $ref: '#/definitions/Office'
     put:
+      tags:
+        - "survey"    
       description: Update a `Office` with given id.
       parameters:
         - name: body
@@ -112,6 +130,8 @@ paths:
           schema:
             $ref: '#/definitions/Office'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `Office` with given id.
       parameters:
         - name: id
@@ -124,6 +144,8 @@ paths:
           description: OK
   /offices:
     post:
+      tags:
+        - "survey"    
       description: Make a new `Office`.
       parameters:
         - name: body
@@ -137,6 +159,8 @@ paths:
           schema:
             $ref: '#/definitions/Office'
     get:
+      tags:
+        - "survey"    
       description: Get all `Office`.
       responses:
         '200':
@@ -147,6 +171,8 @@ paths:
               $ref: '#/definitions/Office'
   '/account-answer/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `AccountAnswer` with given id.
       parameters:
         - name: id
@@ -160,6 +186,8 @@ paths:
           schema:
             $ref: '#/definitions/AccountAnswer'
     put:
+      tags:
+        - "survey"    
       description: Update a `AccountAnswer` with given id.
       parameters:
         - name: body
@@ -178,6 +206,8 @@ paths:
           schema:
             $ref: '#/definitions/AccountAnswer'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `AccountAnswer` with given id.
       parameters:
         - name: id
@@ -190,6 +220,8 @@ paths:
           description: OK
   /account-answers:
     post:
+      tags:
+        - "survey"    
       description: Make a new `AccountAnswer`.
       parameters:
         - name: body
@@ -203,6 +235,8 @@ paths:
           schema:
             $ref: '#/definitions/AccountAnswer'
     get:
+      tags:
+        - "survey"    
       description: Get all `AccountAnswer`.
       responses:
         '200':
@@ -213,6 +247,8 @@ paths:
               $ref: '#/definitions/AccountAnswer'
   '/company/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `Company` with given id.
       parameters:
         - name: id
@@ -226,6 +262,8 @@ paths:
           schema:
             $ref: '#/definitions/Company'
     put:
+      tags:
+        - "survey"    
       description: Update a `Company` with given id.
       parameters:
         - name: body
@@ -244,6 +282,8 @@ paths:
           schema:
             $ref: '#/definitions/Company'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `Company` with given id.
       parameters:
         - name: id
@@ -256,6 +296,8 @@ paths:
           description: OK
   /companys:
     post:
+      tags:
+        - "survey"    
       description: Make a new `Company`.
       parameters:
         - name: body
@@ -269,6 +311,8 @@ paths:
           schema:
             $ref: '#/definitions/Company'
     get:
+      tags:
+        - "survey"    
       description: Get all `Company`.
       responses:
         '200':
@@ -279,6 +323,8 @@ paths:
               $ref: '#/definitions/Company'
   '/survey/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `Survey` with given id.
       parameters:
         - name: id
@@ -292,6 +338,8 @@ paths:
           schema:
             $ref: '#/definitions/Survey'
     put:
+      tags:
+        - "survey"    
       description: Update a `Survey` with given id.
       parameters:
         - name: body
@@ -310,6 +358,8 @@ paths:
           schema:
             $ref: '#/definitions/Survey'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `Survey` with given id.
       parameters:
         - name: id
@@ -322,6 +372,8 @@ paths:
           description: OK
   /surveys:
     post:
+      tags:
+        - "survey"    
       description: Make a new `Survey`.
       parameters:
         - name: body
@@ -335,6 +387,8 @@ paths:
           schema:
             $ref: '#/definitions/Survey'
     get:
+      tags:
+        - "survey"    
       description: Get all `Survey`.
       responses:
         '200':
@@ -345,6 +399,8 @@ paths:
               $ref: '#/definitions/Survey'
   '/account-survey/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `AccountSurvey` with given id.
       parameters:
         - name: id
@@ -358,6 +414,8 @@ paths:
           schema:
             $ref: '#/definitions/AccountSurvey'
     put:
+      tags:
+        - "survey"    
       description: Update a `AccountSurvey` with given id.
       parameters:
         - name: body
@@ -376,6 +434,8 @@ paths:
           schema:
             $ref: '#/definitions/AccountSurvey'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `AccountSurvey` with given id.
       parameters:
         - name: id
@@ -388,6 +448,8 @@ paths:
           description: OK
   /account-surveys:
     post:
+      tags:
+        - "survey"    
       description: Make a new `AccountSurvey`.
       parameters:
         - name: body
@@ -401,6 +463,8 @@ paths:
           schema:
             $ref: '#/definitions/AccountSurvey'
     get:
+      tags:
+        - "survey"    
       description: Get all `AccountSurvey`.
       responses:
         '200':
@@ -411,6 +475,8 @@ paths:
               $ref: '#/definitions/AccountSurvey'
   '/tag/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `Tag` with given id.
       parameters:
         - name: id
@@ -424,6 +490,8 @@ paths:
           schema:
             $ref: '#/definitions/Tag'
     put:
+      tags:
+        - "survey"    
       description: Update a `Tag` with given id.
       parameters:
         - name: body
@@ -442,6 +510,8 @@ paths:
           schema:
             $ref: '#/definitions/Tag'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `Tag` with given id.
       parameters:
         - name: id
@@ -454,6 +524,8 @@ paths:
           description: OK
   /tags:
     post:
+      tags:
+        - "survey"    
       description: Make a new `Tag`.
       parameters:
         - name: body
@@ -467,6 +539,8 @@ paths:
           schema:
             $ref: '#/definitions/Tag'
     get:
+      tags:
+        - "survey"    
       description: Get all `Tag`.
       responses:
         '200':
@@ -477,6 +551,8 @@ paths:
               $ref: '#/definitions/Tag'
   '/domain/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `Domain` with given id.
       parameters:
         - name: id
@@ -490,6 +566,8 @@ paths:
           schema:
             $ref: '#/definitions/Domain'
     put:
+      tags:
+        - "survey"    
       description: Update a `Domain` with given id.
       parameters:
         - name: body
@@ -508,6 +586,8 @@ paths:
           schema:
             $ref: '#/definitions/Domain'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `Domain` with given id.
       parameters:
         - name: id
@@ -520,6 +600,8 @@ paths:
           description: OK
   /domains:
     post:
+      tags:
+        - "survey"    
       description: Make a new `Domain`.
       parameters:
         - name: body
@@ -533,6 +615,8 @@ paths:
           schema:
             $ref: '#/definitions/Domain'
     get:
+      tags:
+        - "survey"    
       description: Get all `Domain`.
       responses:
         '200':
@@ -543,6 +627,8 @@ paths:
               $ref: '#/definitions/Domain'
   '/survey-answer/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `SurveyAnswer` with given id.
       parameters:
         - name: id
@@ -556,6 +642,8 @@ paths:
           schema:
             $ref: '#/definitions/SurveyAnswer'
     put:
+      tags:
+        - "survey"    
       description: Update a `SurveyAnswer` with given id.
       parameters:
         - name: body
@@ -574,6 +662,8 @@ paths:
           schema:
             $ref: '#/definitions/SurveyAnswer'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `SurveyAnswer` with given id.
       parameters:
         - name: id
@@ -586,6 +676,8 @@ paths:
           description: OK
   /survey-answers:
     post:
+      tags:
+        - "survey"    
       description: Make a new `SurveyAnswer`.
       parameters:
         - name: body
@@ -599,6 +691,8 @@ paths:
           schema:
             $ref: '#/definitions/SurveyAnswer'
     get:
+      tags:
+        - "survey"    
       description: Get all `SurveyAnswer`.
       responses:
         '200':
@@ -609,6 +703,8 @@ paths:
               $ref: '#/definitions/SurveyAnswer'
   '/survey-question/{id}':
     get:
+      tags:
+        - "survey"    
       description: Get one `SurveyQuestion` with given id.
       parameters:
         - name: id
@@ -622,6 +718,8 @@ paths:
           schema:
             $ref: '#/definitions/SurveyQuestion'
     put:
+      tags:
+        - "survey"    
       description: Update a `SurveyQuestion` with given id.
       parameters:
         - name: body
@@ -640,6 +738,8 @@ paths:
           schema:
             $ref: '#/definitions/SurveyQuestion'
     delete:
+      tags:
+        - "survey"    
       description: Delete a `SurveyQuestion` with given id.
       parameters:
         - name: id
@@ -652,6 +752,8 @@ paths:
           description: OK
   /survey-questions:
     post:
+      tags:
+        - "survey"    
       description: Make a new `SurveyQuestion`.
       parameters:
         - name: body
@@ -665,6 +767,8 @@ paths:
           schema:
             $ref: '#/definitions/SurveyQuestion'
     get:
+      tags:
+        - "survey"    
       description: Get all `SurveyQuestion`.
       responses:
         '200':
