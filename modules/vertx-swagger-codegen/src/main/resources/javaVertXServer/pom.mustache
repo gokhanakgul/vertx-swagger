@@ -12,15 +12,18 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<junit.version>4.12</junit.version>
-		<vertx.version>3.4.2</vertx.version>
-		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-		<vertx-swagger-router.version>{{vertxSwaggerRouterVersion}}</vertx-swagger-router.version>
-		<maven-shade-plugin.version>2.3</maven-shade-plugin.version>
-		<jackson-datatype-jsr310.version>2.7.4</jackson-datatype-jsr310.version>
+        <junit.version>4.12</junit.version>
+        <vertx.version>3.4.2</vertx.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <vertx-swagger-router.version>1.4.1-SNAPSHOT</vertx-swagger-router.version>
+        <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
+        <jackson-datatype-jsr310.version>2.8.9</jackson-datatype-jsr310.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <mysql.version>5.1.44</mysql.version>
 	</properties>
 
 	<dependencies>
+        
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -59,7 +62,25 @@
           <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>
