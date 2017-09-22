@@ -44,7 +44,7 @@ public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/j
                 }
             });
         }catch(Exception e){
-            LOGGER.error(e.getCause);
+            LOGGER.error(e.getCause());
             startFuture.fail(e.getCause());
         }
         {{/jdbcPersistence}}

@@ -1,5 +1,6 @@
 {
     "http.port" : 8080,
+    "defaultProvider":"c3p0",
 
     "c3p0" : {
         "provider_class": "io.vertx.ext.jdbc.spi.impl.C3P0DataSourceProvider",
@@ -7,12 +8,13 @@
         "driver_class":"org.hsqldb.jdbcDriver",
         "user":"",
         "password":"",
-
     },
 
     "hikari" :{
-        "provider_class": "io.vertx.ext.jdbc.spi.impl.HikariDataSourceProvider",
+        "provider_class": "io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider",
         "property_file":"/hikari.properties"
     }
+
+
 
 }
