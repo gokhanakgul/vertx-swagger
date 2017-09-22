@@ -12,7 +12,7 @@ public class SQLHelper {
 
     public static final String CRETA_SCHEMA_UTF8_MB4 = "CREATE SCHEMA IF NOT EXISTS {{artifactId}} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 
-    public static final String CHECK_SQL_QUERY = "SELECT 1";
+    public static final String CHECK_SQL_QUERY = "SELECT 1 FROM dual";
 
 {{#models}}
     {{#model}}

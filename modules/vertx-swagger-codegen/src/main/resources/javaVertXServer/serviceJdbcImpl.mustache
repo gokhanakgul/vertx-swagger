@@ -15,6 +15,7 @@ private JDBCClient _dbClient;
                         LOGGER.error("DB Prepare Exception", create.cause());
                         readyHandler.handle(Future.failedFuture(create.cause()));
                     } else {
+                        LOGGER.info("Connection Success");
                         readyHandler.handle(Future.succeededFuture(this));
                     }
                 });

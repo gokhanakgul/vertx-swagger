@@ -9,6 +9,7 @@ import com.github.phiz71.vertx.swagger.router.SwaggerRouter;
 import io.swagger.models.Swagger;
 import io.swagger.parser.SwaggerParser;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.json.Json;
@@ -45,7 +46,8 @@ public class MainApiVerticle extends AbstractVerticle {
       
     public void deployVerticles(Future<Void> startFuture) {
         {{#apiInfo}}{{#apis}}
-        vertx.deployVerticle("{{apiPackage}}.{{classname}}Verticle", res -> {
+        DeploymentOptions deploymentOptions = new DeploymentOptions().setConfig(config());
+        vertx.deployVerticle("{{apiPackage}}.{{classname}}Verticle", deploymentOptions, res -> {
             if (res.succeeded()) {
                 LOGGER.info("{{classname}}Verticle : Deployed");
             } else {

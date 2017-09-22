@@ -1,5 +1,16 @@
-dataSourceClassName=com.mysql.jdbc.Driver
-dataSource.userName=root
+dataSourceClassName=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+jdbcUrl=jdbc:mysql://localhost:3306/{{artifactId}}?useUnicode=true&characterEncoding=utf-8&useSSL=false
+dataSource.user=root
 dataSource.password=password
-dataSource.url=jdbc:mysql://localhost:3306/{{artifactId}}?useUnicode=true&characterEncoding=utf-8&useSSL=false
-dataSource.connectionInitSql=/dbInitialScript.sql
+
+connectionInitSql=select 1 from dual
+
+#driverClassName=com.mysql.jdbc.Driver
+#driverClass=com.mysql.jdbc.Driver
+#idleMaxAgeInMinutes=15
+#idleConnectionTestPeriodInMinutes=10
+#partitionCount=3
+#acquireIncrement=5
+#maxConnectionsPerPartition=10
+#minConnectionsPerPartition=5
+#statementsCacheSize=50

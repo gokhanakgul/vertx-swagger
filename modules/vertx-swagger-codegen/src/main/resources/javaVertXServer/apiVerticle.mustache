@@ -32,15 +32,21 @@ public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/j
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         {{#jdbcPersistence}}
-        super.start(startFuture);
-        service = {{classname}}.create(dbClient,  ready -> {
-            if (ready.succeeded()) {
-                startFuture.complete();
-                initOperations();
-            } else {
-                startFuture.fail(ready.cause());
-            }
-        });
+        try{
+            super.start(startFuture);
+            service = {{classname}}.create(dbClient,  ready -> {
+                if (ready.succeeded()) {
+                    startFuture.complete();
+                    initOperations();
+                } else {
+                    LOGGER.error(ready.cause());
+                    startFuture.fail(ready.cause());
+                }
+            });
+        }catch(Exception e){
+            LOGGER.error(e.getCause);
+            startFuture.fail(e.getCause());
+        }
         {{/jdbcPersistence}}
         {{^jdbcPersistence}}
         initOperations();
