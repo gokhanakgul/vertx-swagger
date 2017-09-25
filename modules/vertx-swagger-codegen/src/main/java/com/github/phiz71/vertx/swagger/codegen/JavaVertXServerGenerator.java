@@ -188,7 +188,8 @@ public class JavaVertXServerGenerator extends AbstractJavaCodegen {
         if (Boolean.parseBoolean(additionalProperties.getOrDefault(JDBC_PERSISTENCE, "false").toString())) {
             supportingFiles.add(new SupportingFile("JDBCVerticle.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "JDBCVerticle.java"));
             supportingFiles.add(new SupportingFile("SQLHelper.mustache", sourceFolder + File.separator + invokerPackage.replace(".", File.separator), "SQLHelper.java"));
-            supportingFiles.add(new SupportingFile("dbInitialScript.mustache", resourceFolder, "dbInitialScript.sql"));
+            supportingFiles.add(new SupportingFile("dbInitialScript.mustache", resourceFolder, "dbInit.sql"));
+            supportingFiles.add(new SupportingFile("dbTestInitialScript.mustache", resourceFolder, "dbInitHSQL.sql"));
             writeOptional(outputFolder, new SupportingFile("hikari.mustache", resourceFolder, "hikari.properties"));
             writeOptional(outputFolder, new SupportingFile("c3p0.mustache", resourceFolder, "c3p0.properties"));
         }

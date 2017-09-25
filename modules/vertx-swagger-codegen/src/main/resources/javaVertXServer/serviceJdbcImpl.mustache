@@ -1,6 +1,6 @@
 private JDBCClient _dbClient;
 
-    public {{classname}}Impl(JDBCClient dbClient, Handler<AsyncResult<{{classname}}>> readyHandler) {
+    public {{classname}}Impl(JDBCClient dbClient, JsonObject config, Handler<AsyncResult<{{classname}}>> readyHandler) {
         this._dbClient = dbClient;
 
         dbClient.getConnection(ar -> {
@@ -9,6 +9,32 @@ private JDBCClient _dbClient;
                 readyHandler.handle(Future.failedFuture(ar.cause()));
             } else {
                 SQLConnection connection = ar.result();
+
+                JsonObject defaultConfig = config.getJsonObject(config.getString( "defaultProvider"));
+                String aSQLScriptFilePath = defaultConfig.getString("initSQL");
+
+                if(aSQLScriptFilePath!=null){
+                    try {
+                        // Initialize object for ScripRunner
+                        ScriptRunner sr = new ScriptRunner( connection.unwrap(), false, false);
+
+                        // Give the input file to Reader
+                        InputStream in = this.getClass().getClassLoader().getResourceAsStream(aSQLScriptFilePath);
+                        Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+
+                        // Exctute script
+                        sr.runScript(reader);
+                        readyHandler.handle(Future.succeededFuture(this));
+
+                    } catch (Exception e) {
+                        System.err.println("Failed to Execute" + aSQLScriptFilePath + " The error is " + e.getMessage());
+                        readyHandler.handle(Future.failedFuture(e.getCause()));
+                    } finally {
+                        connection.close();
+                    }
+                }
+
+/*
                 connection.execute(SQLHelper.CHECK_SQL_QUERY, create -> {
                     connection.close();
                     if (create.failed()) {
@@ -19,7 +45,7 @@ private JDBCClient _dbClient;
                         readyHandler.handle(Future.succeededFuture(this));
                     }
                 });
-
+*/
             }
         });
     }

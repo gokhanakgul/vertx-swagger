@@ -1,0 +1,12 @@
+
+{{#models}}
+    {{#model}}
+
+CREATE TABLE IF NOT EXISTS PUBLIC.{{jdbcTablePrefix}}{{classname}}({{#allVars}}
+    {{name}}{{#isString}} VARCHAR(255) {{/isString}}{{#isInteger}} INTEGER {{/isInteger}}{{#isLong}} BIGINT {{/isLong}}{{#isFloat}} REAL {{/isFloat}}{{#isDouble}} FLOAT {{/isDouble}}{{#isByteArray}} BINARY {{/isByteArray}}{{#isBinary}} BLOB {{/isBinary}}{{#isFile}} CLOB {{/isFile}}{{#isBoolean}} BIT {{/isBoolean}}{{#isDate}} DATE  {{/isDate}}{{#isDateTime}} TIMESTAMP NOT NULL {{/isDateTime}}{{#vendorExtensions}}{{#identity}} IDENTITY PRIMARY KEY {{/identity}}{{/vendorExtensions}}{{#hasMore}},{{/hasMore}}{{/allVars}}
+);
+    {{/model}}
+{{/models}}
+
+COMMIT;
+

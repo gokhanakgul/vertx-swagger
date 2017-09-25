@@ -34,7 +34,7 @@ public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/j
         {{#jdbcPersistence}}
         try{
             super.start(startFuture);
-            service = {{classname}}.create(dbClient,  ready -> {
+            service = {{classname}}.create(dbClient, config(), ready -> {
                 if (ready.succeeded()) {
                     startFuture.complete();
                     initOperations();

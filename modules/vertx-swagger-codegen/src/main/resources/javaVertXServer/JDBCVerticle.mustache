@@ -30,8 +30,9 @@ public class JDBCVerticle extends AbstractVerticle {
         if (dbClient != null)
             return;
 
-        JsonObject defaultConfig = config().getJsonObject(C3P0_POOL);
+        JsonObject defaultConfig = config().getJsonObject(config().getString( "defaultProvider",C3P0_POOL));
         dbClient = JDBCClient.createShared(vertx, defaultConfig);
 
     }
+
 }

@@ -30,7 +30,7 @@ public class SQLHelper {
     public static final String {{classname}}_SQL_updateBy{{nameInCamelCase}} = "UPDATE {{jdbcTablePrefix}}{{classname}} SET {{#allVars}}{{^isReadOnly}} {{name}} = ? {{/isReadOnly}}{{/allVars}} WHERE {{name}} = ?";
 
     {{/allVars}}
-    public static final String {{classname}}_SQL_insert{{nameInCamelCase}} = "INSERT INTO {{jdbcTablePrefix}}{{classname}} ({{#allVars}}{{^isReadOnly}} {{name}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}}) VALUES ({{#allVars}}{{^isReadOnly}} ? {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}})";
+    public static final String {{classname}}_SQL_insert{{nameInCamelCase}} = "INSERT INTO {{jdbcTablePrefix}}{{classname}} ({{#allVars}}{{^isReadOnly}} {{name}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}}) VALUES ({{#allVars}}{{^isReadOnly}} {{#vendorExtensions}}{{#identity}} NULL {{/identity}} {{^identity}} ? {{/identity}}{{/vendorExtensions}}  {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}})";
 
     //############# END {{classname}} #############
 

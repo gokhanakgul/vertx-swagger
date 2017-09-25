@@ -17,12 +17,13 @@ import io.vertx.ext.auth.User;
 import java.util.List;
 import java.util.Map;
 import io.vertx.ext.jdbc.JDBCClient;
+import io.vertx.core.json.JsonObject;
 
 public interface {{classname}}  {
 
 {{#jdbcPersistence}}
-    static {{classname}} create(JDBCClient dbClient,  Handler<AsyncResult<{{classname}}>> readyHandler) {
-        return new {{classname}}Impl(dbClient, readyHandler);
+    static {{classname}} create(JDBCClient dbClient, JsonObject config,  Handler<AsyncResult<{{classname}}>> readyHandler) {
+        return new {{classname}}Impl(dbClient, config, readyHandler);
     }
 {{/jdbcPersistence}}
 

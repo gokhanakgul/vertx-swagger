@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.HttpClient;
@@ -45,8 +46,14 @@ public class {{classname}}Test {
         Async before = context.async();
 
         vertx = Vertx.vertx();
-        // init Main
-        vertx.deployVerticle("io.swagger.server.api.MainApiVerticle", res -> {
+
+        FileSystem fs = vertx.fileSystem();
+        Buffer buffer =  fs.readFileBlocking("config.json");
+
+        DeploymentOptions deploymentOptions = new DeploymentOptions();
+        deploymentOptions.setConfig(buffer.toJsonObject());
+
+        vertx.deployVerticle("io.swagger.server.api.MainApiVerticle", deploymentOptions, res -> {
             if (res.succeeded()) {
                 before.complete();
             } else {

@@ -4,17 +4,17 @@
 
     "c3p0" : {
         "provider_class": "io.vertx.ext.jdbc.spi.impl.C3P0DataSourceProvider",
-        "url":"jdbc:hsqldb:file:db/wiki",
+        "url":"jdbc:hsqldb:file:db/vertx",
         "driver_class":"org.hsqldb.jdbcDriver",
         "user":"",
         "password":"",
+        "initSQL":"dbInitHSQL.sql"
     },
 
     "hikari" :{
         "provider_class": "io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider",
-        "property_file":"/hikari.properties"
+        "property_file":"/hikari.properties",
+        "initSQL":"dbInit.sql"
     }
-
-
 
 }
