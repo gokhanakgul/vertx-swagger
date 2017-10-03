@@ -10,7 +10,7 @@ COMMIT;
 
 {{#models}}
     {{#model}}
-# CREATE MODEL is {{classname}}
+--# CREATE MODEL is {{classname}}
 
 DROP TABLE IF EXISTS {{artifactId}}.{{jdbcTablePrefix}}{{classname}};
 
