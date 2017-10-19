@@ -45,8 +45,10 @@ public class MainApiVerticle extends AbstractVerticle {
     }
       
     public void deployVerticles(Future<Void> startFuture) {
-        {{#apiInfo}}{{#apis}}
+
         DeploymentOptions deploymentOptions = new DeploymentOptions().setConfig(config());
+
+        {{#apiInfo}}{{#apis}}
         vertx.deployVerticle("{{apiPackage}}.{{classname}}Verticle", deploymentOptions, res -> {
             if (res.succeeded()) {
                 LOGGER.info("{{classname}}Verticle : Deployed");
