@@ -1,0 +1,201 @@
+package {{package}};
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.User;
+import io.vertx.core.Future;
+import com.github.phiz71.vertx.swagger.router.SwaggerRouter;
+
+{{#jdbcPersistence}}import io.swagger.server.api.JDBCVerticle;{{/jdbcPersistence}}
+
+{{#imports}}import {{import}};
+{{/imports}}
+
+import java.util.List;
+import java.util.Map;
+
+<<<<<<< HEAD
+public class {{classname}}Verticle extends {{#jdbcPersistence}}JDBCVerticle {{/jdbcPersistence}}{{^jdbcPersistence}}AbstractVerticle {{/jdbcPersistence}} {
+    private final static Logger LOGGER = LoggerFactory.getLogger({{classname}}Verticle.class);
+    
+    {{#operations}}{{#operation}}{{#vendorExtensions}}final static String {{x-serviceId-varName}} = "{{x-serviceId}}";
+    {{/vendorExtensions}}{{/operation}}{{/operations}}
+
+    protected {{classname}} service {{^jdbcPersistence}} = createServiceImplementation(){{/jdbcPersistence}};
+
+    @Override
+    public void start(Future<Void> startFuture) throws Exception {
+        {{#jdbcPersistence}}
+        try{
+            super.start(startFuture);
+            service = {{classname}}.create(dbClient, config(), ready -> {
+                if (ready.succeeded()) {
+                    startFuture.complete();
+                    initOperations();
+                } else {
+                    LOGGER.error(ready.cause());
+                    startFuture.fail(ready.cause());
+                }
+            });
+        }catch(Exception e){
+            LOGGER.error(e.getCause());
+            startFuture.fail(e.getCause());
+        }
+        {{/jdbcPersistence}}
+        {{^jdbcPersistence}}
+        initOperations();
+        {{/jdbcPersistence}}
+
+    }
+
+    private void initOperations(){
+        {{#operations}}{{#operation}}
+        //Consumer for {{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
+        vertx.eventBus().<JsonObject> consumer({{#vendorExtensions}}{{x-serviceId-varName}}{{/vendorExtensions}}).handler(message -> {
+            try {
+                {{#hasAuthMethods}}
+                User user = SwaggerRouter.extractAuthUserFromMessage(message);
+                {{/hasAuthMethods}}
+                {{#hasParams}}
+                    {{#allParams}}
+                        {{#isListContainer}}
+                {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonArray("{{baseName}}").encode(), new TypeReference<{{{dataType}}}>(){});
+                        {{/isListContainer}}
+                        {{^isListContainer}}
+                            {{#isPrimitiveType}}
+                                {{#isString}}
+                                    {{#vendorExtensions}}
+                                        {{#X-isUUID}}
+                {{{dataType}}} {{paramName}} = {{{dataType}}}.fromString(message.body().getString("{{baseName}}"));
+                                        {{/X-isUUID}}
+                                        {{^X-isUUID}}
+                {{{dataType}}} {{paramName}} = message.body().getString("{{baseName}}");
+                                        {{/X-isUUID}}
+                                    {{/vendorExtensions}}
+                                    {{^vendorExtensions}}
+                {{{dataType}}} {{paramName}} = message.body().getString("{{baseName}}");
+                                    {{/vendorExtensions}}
+                                {{/isString}}
+                                {{^isString}}
+                {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getString("{{baseName}}"), {{{dataType}}}.class);
+                                {{/isString}}
+                            {{/isPrimitiveType}}
+                            {{^isPrimitiveType}}
+                {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonObject("{{baseName}}").encode(), {{{dataType}}}.class);
+                            {{/isPrimitiveType}}
+                        {{/isListContainer}}
+                    {{/allParams}}
+                {{/hasParams}}
+                {{#rxInterface}}
+=======
+public class {{classname}}Verticle extends AbstractVerticle {
+    private VerticleHelper verticleHelper = new VerticleHelper(this.getClass());
+
+    {{#operations}}{{#operation}}{{#vendorExtensions}}private static final String {{x-serviceId-varName}} = "{{x-serviceId}}";
+    {{/vendorExtensions}}{{/operation}}{{/operations}}
+
+    private {{classname}} service = createServiceImplementation();
+
+    {{#operations}}{{#operation}}//Handler for {{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}
+    final Handler<Message<JsonObject>> {{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}Handler = message -> {
+        try {
+    {{#hasAuthMethods}}
+            User user = SwaggerRouter.extractAuthUserFromMessage(message);
+    {{/hasAuthMethods}}
+    {{#hasParams}}
+        {{#allParams}}
+            {{#isListContainer}}
+            {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonArray("{{baseName}}").encode(), new TypeReference<{{{dataType}}}>(){});
+            {{/isListContainer}}
+            {{^isListContainer}}
+                {{#isPrimitiveType}}
+                    {{#isString}}
+                        {{#vendorExtensions}}
+                            {{#X-isUUID}}
+                                {{#required}}
+            {{{dataType}}} {{paramName}} = {{{dataType}}}.fromString(message.body().getString("{{baseName}}"));
+                                {{/required}}
+                                {{^required}}
+            {{{dataType}}} {{paramName}} = null;
+            if(message.body().getString("{{baseName}}") != null) {
+                {{paramName}} = {{{dataType}}}.fromString(message.body().getString("{{baseName}}"));
+            }
+                                {{/required}}
+                            {{/X-isUUID}}
+                            {{^X-isUUID}}
+            {{{dataType}}} {{paramName}} = message.body().getString("{{baseName}}");
+                            {{/X-isUUID}}
+                        {{/vendorExtensions}}
+                        {{^vendorExtensions}}
+            {{{dataType}}} {{paramName}} = message.body().getString("{{baseName}}");
+                        {{/vendorExtensions}}
+                    {{/isString}}
+                    {{^isString}}
+                        {{#required}}
+            {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getString("{{baseName}}"), {{{dataType}}}.class);
+                        {{/required}}
+                        {{^required}}
+            {{{dataType}}} {{paramName}} = null;
+            if(message.body().getString("{{baseName}}") != null) {
+                {{paramName}} = Json.mapper.readValue(message.body().getString("{{baseName}}"), {{{dataType}}}.class);
+            }
+                        {{/required}}
+                    {{/isString}}
+                {{/isPrimitiveType}}
+                {{^isPrimitiveType}}
+            {{{dataType}}} {{paramName}} = Json.mapper.readValue(message.body().getJsonObject("{{baseName}}").encode(), {{{dataType}}}.class);
+                {{/isPrimitiveType}}
+            {{/isListContainer}}
+        {{/allParams}}
+    {{/hasParams}}
+    {{#rxInterface}}
+>>>>>>> origin/master
+{{>RxCall}}
+    {{/rxInterface}}
+    {{^rxInterface}}
+{{>AsyncCall}}
+<<<<<<< HEAD
+                {{/rxInterface}}
+            } catch (Exception e) {
+                manageError(message, e, {{#vendorExtensions}}{{x-serviceId-varName}}{{/vendorExtensions}});
+            }
+        });
+        {{/operation}}{{/operations}}
+
+    }
+
+    private void manageError(Message<JsonObject> message, Throwable cause, String serviceName) {
+        int code = MainApiException.INTERNAL_SERVER_ERROR.getStatusCode();
+        String statusMessage = MainApiException.INTERNAL_SERVER_ERROR.getStatusMessage();
+        if (cause instanceof MainApiException) {
+            code = ((MainApiException)cause).getStatusCode();
+            statusMessage = ((MainApiException)cause).getStatusMessage();
+        } else {
+            logUnexpectedError(serviceName, cause); 
+=======
+    {{/rxInterface}}
+        } catch (Exception e) {
+            verticleHelper.manageError(message, e, {{#vendorExtensions}}{{x-serviceId-varName}}{{/vendorExtensions}});
+>>>>>>> origin/master
+        }
+    };
+
+    {{/operation}}{{/operations}}
+
+    @Override
+    public void start() throws Exception {
+        {{#operations}}{{#operation}}vertx.eventBus().<JsonObject> consumer({{#vendorExtensions}}{{x-serviceId-varName}}{{/vendorExtensions}}).handler({{#vendorExtensions}}{{x-serviceId}}{{/vendorExtensions}}Handler);
+        {{/operation}}{{/operations}}
+    }
+
+    {{^jdbcPersistence}}
+    protected {{classname}} createServiceImplementation() {
+       return new {{classname}}Impl();
+    }
+    {{/jdbcPersistence}}
+
+}

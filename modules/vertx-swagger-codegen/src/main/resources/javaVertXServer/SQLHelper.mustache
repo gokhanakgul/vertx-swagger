@@ -27,10 +27,10 @@ public class SQLHelper {
 
     public static final String {{classname}}_SQL_deleteBy{{nameInCamelCase}} = "DELETE FROM {{jdbcTablePrefix}}{{classname}} WHERE {{name}} = ?";
 
-    public static final String {{classname}}_SQL_updateBy{{nameInCamelCase}} = "UPDATE {{jdbcTablePrefix}}{{classname}} SET {{#allVars}}{{^isReadOnly}} {{name}} = ? {{/isReadOnly}}{{/allVars}} WHERE {{name}} = ?";
+    public static final String {{classname}}_SQL_updateBy{{nameInCamelCase}} = "UPDATE {{jdbcTablePrefix}}{{classname}} SET {{#allVars}}{{^isReadOnly}} {{name}} = ? {{/isReadOnly}}{{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/allVars}} WHERE {{name}} = ?";
 
     {{/allVars}}
-    public static final String {{classname}}_SQL_insert{{nameInCamelCase}} = "INSERT INTO {{jdbcTablePrefix}}{{classname}} ({{#allVars}}{{^isReadOnly}} {{name}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}}) VALUES ({{#allVars}}{{^isReadOnly}} {{#vendorExtensions}}{{#identity}} NULL {{/identity}} {{^identity}} ? {{/identity}}{{/vendorExtensions}}  {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}})";
+    public static final String {{classname}}_SQL_insert{{nameInCamelCase}} = "INSERT INTO {{jdbcTablePrefix}}{{classname}} ({{#allVars}}{{^isReadOnly}} {{name}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}}) VALUES ({{#allVars}}{{^isReadOnly}}{{#vendorExtensions}}{{#identity}} NULL {{/identity}}{{^identity}} ? {{/identity}}{{/vendorExtensions}} {{#hasMoreNonReadOnly}},{{/hasMoreNonReadOnly}}{{/isReadOnly}}{{/allVars}})";
 
     //############# END {{classname}} #############
 

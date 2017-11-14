@@ -1,4 +1,4 @@
-private JDBCClient _dbClient;
+private final JDBCClient _dbClient;
 
     public {{classname}}Impl(JDBCClient dbClient, JsonObject config, Handler<AsyncResult<{{classname}}>> readyHandler) {
         this._dbClient = dbClient;
@@ -14,9 +14,9 @@ private JDBCClient _dbClient;
                 String aSQLScriptFilePath = defaultConfig.getString("initSQL");
 
                 if(aSQLScriptFilePath!=null){
-                    try {
+                    try (SQLConnection connection = ar.result()) {
                         // Initialize object for ScripRunner
-                        ScriptRunner sr = new ScriptRunner( connection.unwrap(), false, false);
+                        ScriptRunner sr = new ScriptRunner(connection.unwrap(), false, false);
 
                         // Give the input file to Reader
                         InputStream in = this.getClass().getClassLoader().getResourceAsStream(aSQLScriptFilePath);
@@ -29,8 +29,6 @@ private JDBCClient _dbClient;
                     } catch (Exception e) {
                         System.err.println("Failed to Execute" + aSQLScriptFilePath + " The error is " + e.getMessage());
                         readyHandler.handle(Future.failedFuture(e.getCause()));
-                    } finally {
-                        connection.close();
                     }
                 }
 
